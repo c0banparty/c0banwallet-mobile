@@ -1,12 +1,12 @@
 /*
- * OTCMarket.js - View 
+ * OTCMarket.js - View
  *
  * Handle displaying Over-The-Counter (OTC) exchange view
  */
 
-Ext.define('FW.view.OTCMarket', {
+Ext.define('C0banparty.wallet.view.OTCMarket', {
     extend: 'Ext.Container',
-    
+
     config: {
         id: 'otcMarketView',
         layout: 'vbox',
@@ -30,13 +30,13 @@ Ext.define('FW.view.OTCMarket', {
             }]
         }]
     },
-    
+
     // Handle initializing the screen
     initialize: function(){
         var me  = this,
             cfg = me.config;
         // Setup alias to main controller
-        me.main = FW.app.getController('Main');
+        me.main = C0banparty.wallet.app.getController('Main');
         me.tb   = me.down('fw-toptoolbar');
         // Call parent
         me.callParent();

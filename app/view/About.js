@@ -1,10 +1,10 @@
 /*
  * About.js - View
- * 
+ *
  * Displaying information about the wallet, website, developers, etc.
  */
 
- Ext.define('FW.view.About', {
+ Ext.define('C0banparty.wallet.view.About', {
     extend: 'Ext.Container',
 
     config: {
@@ -30,7 +30,7 @@
                 html:'<p align="justify">FreeWallet is a free open-source mobile wallet which supports Bitcoin and tokens. FreeWallet uses public APIs available from blocktrail.com, blockr.io, coindaddy.io, chain.so, and xchain.io.</p>'
             },{
                 margin: '10 0 0 0',
-                html:'<p align="justify"><b>Send a donation to support FreeWallet hosting and development.</b></p>' + 
+                html:'<p align="justify"><b>Send a donation to support FreeWallet hosting and development.</b></p>' +
                      '<p align="justify">FreeWallet is non-profit, self-funded, open source and community supported project. We appreciate any donations, and all donations go directly towards supporting future development.</p>'
             },{
                 xtype: 'button',
@@ -43,8 +43,8 @@
                     var me = Ext.getCmp('aboutView');
                     me.main.showTool('send', {
                         reset: true,
-                        currency: 'BTC',
-                        address: '17AXerXeWPMg5xiZ4XiC8QWS93aePuEzNr'
+                        currency: 'RYO',
+                        address: '8ReFheQn5VYo2HdAmSiSzfxz2YWQDY4Xbm'
                     });
                 }
             },{
@@ -79,7 +79,7 @@
     initialize: function(){
         var me = this;
         // Setup alias to main controller
-        me.main = FW.app.getController('Main');
+        me.main = C0banparty.wallet.app.getController('Main');
         me.donate = me.down('[itemId=donate]');
 
 

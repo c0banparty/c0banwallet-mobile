@@ -1,17 +1,17 @@
 /*
  * TransactionInfo.js - View
- * 
+ *
  * Displays transaction information
  */
- 
- Ext.define('FW.view.TransactionInfo', {
+
+ Ext.define('C0banparty.wallet.view.TransactionInfo', {
     extend: 'Ext.Container',
     xtype: 'fw-transactioninfo',
 
     requires:[
         'Ext.Img',
-        'FW.view.phone.TransactionInfo',
-        'FW.view.tablet.TransactionInfo'
+        'C0banparty.wallet.view.phone.TransactionInfo',
+        'C0banparty.wallet.view.tablet.TransactionInfo'
     ],
 
     config: {
@@ -23,9 +23,9 @@
     initialize: function(){
         var me = this;
         // Setup some aliases
-        me.main = FW.app.getController('Main');
+        me.main = C0banparty.wallet.app.getController('Main');
         // Add view based on device type
-        me.add({ xclass:'FW.view.' + me.main.deviceType + '.TransactionInfo' });
+        me.add({ xclass:'C0banparty.wallet.view.' + me.main.deviceType + '.TransactionInfo' });
         // Now that we have added the correct view, setup some aliases to various components
         me.tb          = me.down('fw-toptoolbar');
         me.image       = me.down('[itemId=image]');
@@ -44,9 +44,9 @@
         me.iconholder  = me.down('[itemId=iconContainer]');
         me.message     = me.down('[itemId=message]');
         me.value       = me.down('[itemId=value]');
-        me.description = me.down('[itemId=description]'); 
-        me.divisible   = me.down('[itemId=divisible]'); 
-        me.locked      = me.down('[itemId=locked]');    
+        me.description = me.down('[itemId=description]');
+        me.divisible   = me.down('[itemId=divisible]');
+        me.locked      = me.down('[itemId=locked]');
         me.transfer    = me.down('[itemId=transfer]');
         me.feePaid     = me.down('[itemId=feePaid]');
         me.issuer      = me.down('[itemId=issuer]');
@@ -64,26 +64,14 @@
                 cmp.setHeight(w);
             }
         });
-        // Setup tap listener on transaction hash field to send taps to xchain.io
-        me.hash.btn.on('tap', function(cmp){
-            var val   = me.hash.getValue(),
-                net   = (FW.WALLET_NETWORK==2) ? 'tBTC' : 'BTC',
-                host  = (FW.WALLET_NETWORK==2) ? 'testnet.xchain.io' : 'xchain.io',
-                asset = me.asset.getValue();
-            if(asset=='BTC')
-                url  = 'https://blocktrail.com/' + net + '/tx/' + val;
-            else 
-                url  = 'https://' + host + '/tx/' + val;
-            me.main.openUrl(url);
-        });
         // Setup listeners on certain fields to handle copying value to clipboard
         var copyFields = ['source','issuer','destination'];
         Ext.each(copyFields, function(name){
             var field = me[name];
             // Handle native copy-to-clipboard functionality
             if(me.main.isNative){
-                field.btn.on('tap', function(){ 
-                    me.main.copyToClipboard(field.getValue()); 
+                field.btn.on('tap', function(){
+                    me.main.copyToClipboard(field.getValue());
                 });
             } else {
                 // Handle non-native copy-to-clipboard functionality
@@ -129,21 +117,21 @@
         me.buying.hide();
         me.selling.hide();
         // Handle Sends
-        if(data.type=='send'){
-            me.image.setSrc('https://xchain.io/icon/' + data.asset.toUpperCase() + '.png');
+        if(data.type=='sends' || data.type == 'send'){
+            // me.image.setSrc('https://xchain.io/icon/' + data.asset.toUpperCase() + '.png');
             me.iconholder.show();
             me.quantity.show();
             me.destination.show();
-        } else if(data.type=='order'){
+        } else if(data.type=='orders'){
             me.buying.show();
             me.selling.show();
-        } else if(data.type=='broadcast'){
+        } else if(data.type=='broadcasts'){
             // Handle Broadcasts
             me.message.show();
             me.value.show();
-        } else if(data.type=='issuance'){
+        } else if(data.type=='issuances'){
             // Handle Issuances
-            me.image.setSrc('https://xchain.io/icon/' + data.asset.toUpperCase() + '.png');
+            // me.image.setSrc('https://xchain.io/icon/' + data.asset.toUpperCase() + '.png');
             me.iconholder.show();
             me.quantity.show();
             me.description.show();
@@ -153,9 +141,9 @@
             me.feePaid.show();
             me.issuer.show();
         }
-        // Hide miners fees for everything except BTC for now
+        // Hide miners fees for everything except RYO for now
         // Come back at some point and add code to determine miners fees WITHOUT having to make an extra API call
-        if(data.asset=='BTC'){
+        if(data.asset=='RYO'){
             me.fee.show();
         } else {
             me.fee.hide();
@@ -169,10 +157,11 @@
     updateData: function(data){
         // console.log('updateData data=',data);
         var me    = this,
-            fmt   = (/\./.test(data.quantity)||data.asset=='BTC') ? '0,0.00000000' : '0,0',
-            time  = (data.timestamp) ? Ext.Date.format(new Date(parseInt(data.timestamp + '000')),'m-d-Y H:i:s') : '',
+            fmt   = (/\./.test(data.quantity)||data.asset=='RYO') ? '0,0.00000000' : '0,0',
+            // time  = (data.timestamp) ? Ext.Date.format(new Date(parseInt(data.timestamp + '000')),'m-d-Y H:i:s') : '',
+            time  = (data.timestamp) ? data.timestamp : '',
             block = (data.block_index) ? numeral(data.block_index).format('0,0') : '-',
-            qty   = (data.quantity) ? data.quantity.replace('-','') : 0,
+            qty   = (data.quantity) ? data.quantity : 0,
             status = (data.timestamp) ? ((data.status) ? data.status : 'Valid') : 'Pending',
             type   = (typeof data.type === 'string') ? data.type : 'Send';
             fee    = (data.fee) ? data.fee : 'NA',
@@ -186,9 +175,10 @@
             me.buying.setValue(numeral(data.get_quantity).format(fmtA) + ' ' + buying);
             me.selling.setValue(numeral(data.give_quantity).format(fmtB) + ' ' + selling);
         }
-        me.asset.setValue(asset);    
+        me.asset.setValue(asset);
         me.type.setValue(type);
-        me.quantity.setValue(numeral(qty).format(fmt));
+        if (data.quantity)
+            me.quantity.setValue(qty);
         me.source.setValue(data.source);
         me.destination.setValue(data.destination);
         me.hash.setValue(data.hash);
@@ -203,17 +193,18 @@
         me.locked.setValue(data.locked);
         me.transfer.setValue(data.transfer);
         me.feePaid.setValue(data.feePaid);
-        me.issuer.setValue(data.issuer);  
+        me.issuer.setValue(data.issuer);
     },
 
 
     // Handle requesting transaction information
     getTransactionInfo: function(data){
-        var me    = this,
-            net   = (FW.WALLET_NETWORK==2) ? 'tbtc' : 'btc',
-            hostA = (FW.WALLET_NETWORK==2) ? 'tbtc.blockr.io' : 'btc.blockr.io',
-            hostB = (FW.WALLET_NETWORK==2) ? 'testnet.xchain.io' : 'xchain.io';
-        // Set loading mask on panel to indicate we are loading 
+        var me         = this,
+            serverinfo = C0banparty.wallet.SERVER_INFO,
+            network = (C0banparty.wallet.WALLET_NETWORK==1) ? 'mainnet' : (C0banparty.wallet.WALLET_NETWORK==2) ? 'testnet' : 'regtest',
+            url    = 'http://' + serverinfo[network].cpHost + ':' + serverinfo[network].cpPort + '/api/';
+
+        // Set loading mask on panel to indicate we are loading
         me.setMasked({
             xtype: 'loadmask',
             cls: 'fw-panel',
@@ -221,97 +212,102 @@
             showAnimation: 'fadeIn',
             indicator: true
         });
-        // Get BTC transaction info
-        if(data.asset=='BTC'){
-            // Get BTC transaction info from blocktrail
+        // Get RYO transaction info
+        if(data.asset=='RYO'){
+            // Get RYO transaction info from blocktrail
             me.main.ajaxRequest({
-                url: 'https://api.blocktrail.com/v1/' + net + '/transaction/' + data.hash + '?api_key=' + FW.API_KEYS.BLOCKTRAIL,
+                url: url,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                jsonData: {
+                  	"jsonrpc": "2.0",
+                  	"id": 0,
+                  	"method": "get_ryo_transaction",
+                  	"params": {
+                  		  "txid": data.hash
+                  	}
+                },
                 success: function(o){
-                    if(o.hash){
-                        // console.log('data=',data);
-                        me.updateData({ 
-                            type: 'Send',
-                            asset: 'BTC',
-                            quantity: numeral(o.estimated_value).multiply(0.00000001).format('0,0.00000000'),
-                            hash: o.hash,
-                            status: (o.block_height) ? 'Valid' : 'Pending',
-                            source: o.inputs[0].address,
-                            destination: o.outputs[0].address,
-                            block_index: o.block_height,
-                            timestamp: moment(o.first_seen_at,["YYYY-MM-DDTH:m:s"]).unix(),
-                            fee: numeral(o.total_fee).multiply(0.00000001).format('0,0.00000000')
+                    // console.log("getTransactionInfo. ryo", o);
+                    if(o.result){
+                        var tx = o.result;
+                        me.updateData({
+                            type: 'sends',
+                            asset: 'RYO',
+                            // quantity: numeral(o.estimated_value).multiply(0.00000001).format('0,0.00000000'),
+                            hash: tx.hash,
+                            status: (tx.block_height) ? 'Valid' : 'Pending',
+                            source: tx.source,
+                            destination: tx.destination,
+                            block_index: tx.block_height,
+                            timestamp: moment.unix(tx.timestamp).format("YYYY-MM-DD H:m:s"),
+                            // fee: numeral(o.total_fee).multiply(0.00000001).format('0,0.00000000')
+                            fee: tx.total_fee
                         });
                     }
                     me.setMasked(false);
                 },
                 failure: function(o){
-                    // If the request to blocktrail API failed, fallback to slower blockr.io API
-                    me.main.ajaxRequest({
-                        url: 'https://' + hostA + '/api/v1/tx/info/' + data.hash,
-                        success: function(o){
-                            if(o.data){
-                                // Get Source and Destination
-                                // Come back and clean this up at some point...
-                                var src  = o.data.vins[0].address,
-                                    dest = false;
-                                Ext.each(o.data.vouts,function(vout){
-                                    if(!vout.is_nonstandard){
-                                        dst = vout.address;
-                                        return false;                                
-                                    }
-                                });
-                                // Handle subtracting miners fee from sent amount
-                                // console.log('data=',data);
-                                me.updateData({ 
-                                    type: 'Send',
-                                    asset: 'BTC',
-                                    quantity: data.quantity,
-                                    hash: data.hash,
-                                    source: src,
-                                    destination: dst,
-                                    block_index: o.data.block,
-                                    timestamp: data.time,
-                                    fee: o.data.fee
-                                });
-                            }
-                        },
-                        // Callback function called on any response
-                        callback: function(){
-                            me.setMasked(false);
-                        }    
-                    });                    
+                    console.error("Error was occured at getTransactionInfo");
+                    console.error(o);
                 }
             });
-  
+
         } else {
             // console.log('data=',data);
             // Handle requesting transaction info from counterpartychain.io API
+            // Loop through transaction types and get latest transactions
+            var serverinfo = C0banparty.wallet.SERVER_INFO,
+                network = (C0banparty.wallet.WALLET_NETWORK==1) ? 'mainnet' : (C0banparty.wallet.WALLET_NETWORK==2) ? 'testnet' : 'regtest',
+                url    = 'http://' + serverinfo[network].cpHost + ':' + serverinfo[network].cpPort + '/';
             me.main.ajaxRequest({
-                url: 'https://' + hostB + '/api/tx/' + data.hash,
+                url: url,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                jsonData: {
+                  	"jsonrpc": "2.0",
+                  	"id": 0,
+                  	"method": "get_transaction",
+                  	"params": {
+                  		  "tx_hash": data.hash
+                  	}
+                },
                 // Success function called when we receive a success response
                 success: function(o){
-                    if(!o.error){
-                        var fee = (data.fee=='NA') ? data.fee : numeral(String(data.fee).replace('+','').replace('-','')).format('0.00000000');
-                        me.updateData(Ext.apply(o,{ 
-                            asset: o.asset,
-                            quantity: o.quantity,
+                    // console.log("getTransactionInfo asset", o);
+                    if(o.result){
+                        // var fee = (data.fee=='NA') ? data.fee : numeral(String(data.fee).replace('+','').replace('-','')).format('0.00000000');
+                        var result = o.result
+                        var quantity = result.data.quantity / 100000000;
+                        quantity *= (C0banparty.wallet.WALLET_ADDRESS.address == result.source && result.type == 'sends') ? -1 : 1;
+                        me.updateData(Ext.apply(result,{
+                            asset: (result.data.asset) ? result.data.asset : '',
+                            quantity: quantity,
                             hash: data.hash,
-                            message: o.text,
-                            value: o.value,
-                            type: o.tx_type,
-                            feePaid: o.fee + ' XCP',
-                            transfer: (o.transfer) ? 'True' : 'False',
-                            locked: (o.locked) ? 'True' : 'False',
-                            divisible: (o.divisible) ? 'True' : 'False',
-                            status : (o.status) ? o.status : 'Pending'
+                            // message: o.text,
+                            description: result.data.description,
+                            value: result.btc_amount / 100000000,
+                            type: result.type,
+                            feePaid: result.fee / 100000000,
+                            transfer: (result.data.transfer) ? 'True' : 'False',
+                            locked: (result.data.locked) ? 'True' : 'False',
+                            divisible: (result.data.divisible) ? 'True' : 'False',
+                            status : result.data.status,
+                            block: result.block_index,
+                            timestamp: moment.unix(result.block_time).format("YYYY-MM-DD H:m:s"),
+                            source: result.source,
+                            destination: result.data.destination,
+                            issuer: result.data.issuer,
                         }));
                     }
                 },
                 // Callback function called on any response
                 callback: function(){
                     me.setMasked(false);
-                }    
-            });            
+                }
+            });
         }
     }
 

@@ -74,14 +74,14 @@
  *      });
  *
  */
-Ext.define('FW.ux.AccordionList', {
+Ext.define('C0banparty.wallet.ux.AccordionList', {
     extend: 'Ext.Container',
     xtype: 'accordionlist',
     alternateClassName: 'Ext.AccordionList',
 
     requires: [
         'Ext.dataview.List',
-        'FW.ux.AccordionListItem'
+        'C0banparty.wallet.ux.AccordionListItem'
     ],
 
     config: {
@@ -486,7 +486,7 @@ Ext.define('FW.ux.AccordionList', {
         var me = this,
             displayField = me.getDisplayField();
         str = Ext.String.format(me.getContentItemTpl(), displayField);
-        // console.log('contentItemTpl str=',str);            
+        // console.log('contentItemTpl str=',str);
         return  str
     },
 

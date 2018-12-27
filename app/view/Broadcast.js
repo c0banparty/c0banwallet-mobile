@@ -1,12 +1,12 @@
 /*
- * Broadcast.js - View 
+ * Broadcast.js - View
  *
  * Display broadcast message form
  */
 
-Ext.define('FW.view.Broadcast', {
+Ext.define('C0banparty.wallet.view.Broadcast', {
     extend: 'Ext.form.Panel',
-    
+
     config: {
         id: 'broadcastView',
         layout: 'vbox',
@@ -55,7 +55,7 @@ Ext.define('FW.view.Broadcast', {
                                 cmp.setValue(max);
                         }
                     }
-                }]                
+                }]
             },{
                 xtype: 'fw-transactionpriority',
                 margin: '0 0 0 0'
@@ -79,14 +79,14 @@ Ext.define('FW.view.Broadcast', {
             }]
         }]
     },
-    
+
 
     // Handle initializing the screen
     initialize: function(){
         var me  = this,
             cfg = me.config;
         // Setup alias to main controller
-        me.main = FW.app.getController('Main');
+        me.main = C0banparty.wallet.app.getController('Main');
         me.tb   = me.down('fw-toptoolbar');
         // Setup aliases to the various fields
         // me.address   = me.down('[name=address]');
@@ -116,7 +116,7 @@ Ext.define('FW.view.Broadcast', {
             me.fee.reset();
             me.value.reset();
             me.priority.reset();
-        }        
+        }
         // Pre-populate message field if we have message
         if(cfg.message)
             me.message.setValue(cfg.message);
@@ -133,9 +133,9 @@ Ext.define('FW.view.Broadcast', {
         if(vals.message==''){
             msg = 'You must enter a message';
         } else {
-            // Validate that we have enough BTC to cover this transaction
-            var balance = me.main.getBalance('BTC'),
-                fee_sat = me.main.getSatoshis(String(vals.feeAmount).replace(' BTC','')),
+            // Validate that we have enough RYO to cover this transaction
+            var balance = me.main.getBalance('RYO'),
+                fee_sat = me.main.getSatoshis(String(vals.feeAmount).replace(' RYO','')),
                 bal_sat = me.main.getSatoshis(balance);
             if(fee_sat > bal_sat)
                 msg = 'Bitcoin balance below required amount.<br/>Please fund this address with some Bitcoin and try again.';
@@ -164,7 +164,7 @@ Ext.define('FW.view.Broadcast', {
                     me.priority.reset();
                 }
             };
-            me.main.cpBroadcast(FW.WALLET_NETWORK, FW.WALLET_ADDRESS.address, vals.message, numeral(vals.value).value(), vals.fee, fee_sat, cb);
+            me.main.cpBroadcast(C0banparty.wallet.WALLET_NETWORK, C0banparty.wallet.WALLET_ADDRESS.address, vals.message, numeral(vals.value).value(), vals.fee, fee_sat, cb);
         }
         // Confirm action with user
         Ext.Msg.confirm('Confirm Broadcast', 'Send Broadcast?', function(btn){

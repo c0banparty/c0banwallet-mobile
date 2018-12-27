@@ -1,10 +1,10 @@
 /*
  * Tools.js - View
- * 
+ *
  * Display list of tools on phone
  */
 
-Ext.define('FW.view.phone.Tools', {
+Ext.define('C0banparty.wallet.view.phone.Tools', {
     extend: 'Ext.Container',
 
     config: {

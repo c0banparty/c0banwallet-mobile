@@ -1,10 +1,10 @@
 /*
- * FW.view.QRCode - View 
+ * C0banparty.wallet.view.QRCode - View 
  *
  * Handle displaying a qrcode
  */
 
-Ext.define('FW.view.QRCode', {
+Ext.define('C0banparty.wallet.view.QRCode', {
     extend: 'Ext.Panel',
     xtype: 'fw-qrcode',
 
@@ -94,7 +94,7 @@ Ext.define('FW.view.QRCode', {
     initialize: function(){
         var me  = this,
             cfg = me.config;
-        me.main = FW.app.getController('Main');
+        me.main = C0banparty.wallet.app.getController('Main');
         me.address = me.down('[itemId=address]');
         // Adjust the box to be wider for tablets
         me.callParent();
@@ -110,10 +110,10 @@ Ext.define('FW.view.QRCode', {
     },
 
 
-    // Handle displaying a QR code 
+    // Handle displaying a QR code
     showQRCode: function(){
         var me   = this,
-            text = (me.text) ? me.text : FW.WALLET_ADDRESS.address;
+            text = (me.text) ? me.text : C0banparty.wallet.WALLET_ADDRESS.address;
         $('#address-qrcode > canvas').remove();
         $('#address-qrcode').qrcode({
             text: text,
@@ -123,7 +123,7 @@ Ext.define('FW.view.QRCode', {
         // // Display messagebox with QR code
         // Ext.Msg.show({
         //     hideOnMaskTap: true,
-        //     message: '<div id="address-qrcode" class="qrcode"></div><div class="address-qrcode-text">' + FW.WALLET_ADDRESS.address + '</div>',
+        //     message: '<div id="address-qrcode" class="qrcode"></div><div class="address-qrcode-text">' + C0banparty.wallet.WALLET_ADDRESS.address + '</div>',
         //     buttons:[{
         //         text: 'Done',
         //         ui:'decline'

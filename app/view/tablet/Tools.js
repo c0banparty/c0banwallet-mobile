@@ -1,10 +1,10 @@
 /*
  * Tools.js - View
- * 
+ *
  * Display list of tools on tablet
  */
 
-Ext.define('FW.view.tablet.Tools', {
+Ext.define('C0banparty.wallet.view.tablet.Tools', {
     extend: 'Ext.Container',
 
     config: {

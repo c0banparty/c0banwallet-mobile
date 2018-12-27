@@ -1,9 +1,9 @@
 /*
  * TokenInfo.js - View
- * 
+ *
  * Display info about specific token or currency on tablet
  */
- Ext.define('FW.view.tablet.TokenInfo', {
+ Ext.define('C0banparty.wallet.view.tablet.TokenInfo', {
     extend: 'Ext.Container',
 
     config: {
@@ -99,11 +99,11 @@
                     label: 'USD Price',
                     itemId: 'usd'
                 },{
-                    label: 'BTC Price',
-                    itemId: 'btc'
+                    label: 'RYO Price',
+                    itemId: 'ryo'
                 },{
-                    label: 'XCP Price',
-                    itemId: 'xcp'
+                    label: 'XCB Price',
+                    itemId: 'xcb'
                 },{
                     label: 'Divisible',
                     itemId: 'divisible'
@@ -126,7 +126,7 @@
                     itemId: 'website',
                     iconCls: 'fa fa-globe',
                     handler: function(btn,url){
-                        FW.app.getController('Main').openUrl(url);
+                        C0banparty.wallet.app.getController('Main').openUrl(url);
                     }
                 }]
             }]

@@ -1,17 +1,17 @@
 /*
  * AddressList.js - View
- * 
+ *
  * Display address list
  */
 
-Ext.define('FW.view.AddressList', {
+Ext.define('C0banparty.wallet.view.AddressList', {
     extend: 'Ext.dataview.List',
     xtype: 'fw-addresslist',
 
     requires:[
         'Ext.field.Search'
     ],
-    
+
     config: {
         id: 'addressList',
         cls: 'fw-panel fw-addresslist',
@@ -28,15 +28,15 @@ Ext.define('FW.view.AddressList', {
                 '<b>{label}</b><br/><i>{address}</i><br/>' +
                 '<table width="300">' +
                 '<tr>' +
-                    '<td class="icon-btc icon-20"></td><td class="fw-addresslist-balance">{[this.getBalance(values, "BTC")]}</td>' +
-                    '<td class="icon-xcp icon-20"></td><td class="fw-addresslist-balance">{[this.getBalance(values, "XCP")]}</td>' +
+                    '<td class="icon-btc icon-20"></td><td class="fw-addresslist-balance">{[this.getBalance(values, "RYO")]}</td>' +
+                    '<td class="icon-xcp icon-20"></td><td class="fw-addresslist-balance">{[this.getBalance(values, "XCB")]}</td>' +
                 '</tr>' +
                 '</table>' +
             '</div>',
             {
                 getClasses: function(values){
                     var cls = 'fw-addresslist-address ';
-                    if(values.address==FW.WALLET_ADDRESS.address)
+                    if(values.address==C0banparty.wallet.WALLET_ADDRESS.address)
                         cls += 'current-address';
                     return cls;
                 },
@@ -62,7 +62,7 @@ Ext.define('FW.view.AddressList', {
             title: 'Select Address',
             back: true,
             onBack: function(){
-                FW.app.getController('Main').showMainView();
+                C0banparty.wallet.app.getController('Main').showMainView();
             },
             plus: true,
             onPlus: function(){
@@ -91,7 +91,7 @@ Ext.define('FW.view.AddressList', {
                         cmp.up('fw-addresslist').onListSearch(cmp.getValue());
                     },
                     buffer: 250,
-                    scope: this                                
+                    scope: this
                 }
             }]
         }]
@@ -103,7 +103,7 @@ Ext.define('FW.view.AddressList', {
         var me     = this,
             cfg   = me.config;
         // Setup alias to main controller
-        me.main = FW.app.getController('Main');
+        me.main = C0banparty.wallet.app.getController('Main');
         // Setup some aliases for the various components
         me.tb     = me.down('fw-toptoolbar');
         me.search = me.getComponent('listSearch');
@@ -120,7 +120,7 @@ Ext.define('FW.view.AddressList', {
             show: function(){
                 me.onListSearch();
             }
-        });         
+        });
         // Handle applying any background class to the list in the correct place (so docked components don't overlay over background)
         if(cfg.bgCls)
             me.element.down('.x-dock-body').addCls(cfg.bgCls);
@@ -135,8 +135,8 @@ Ext.define('FW.view.AddressList', {
             filter = Ext.create('Ext.util.Filter', {
                         filterFn: function(item){
                             var o = item.data;
-                            // Only show addresses for the current wallet 
-                            if(o.prefix==FW.WALLET_PREFIX && o.network==FW.WALLET_NETWORK){
+                            // Only show addresses for the current wallet
+                            if(o.prefix==C0banparty.wallet.WALLET_PREFIX && o.network==C0banparty.wallet.WALLET_NETWORK){
                                 if(str){
                                     if(o.address && String(o.address).match(regexp)!=null)
                                         return true;
@@ -147,12 +147,12 @@ Ext.define('FW.view.AddressList', {
                                 return true;
                             }
                             return false;
-                        }, 
+                        },
                         root: 'data'
                     });
         store.clearFilter();
         store.filter(filter);
-        me.refresh();        
+        me.refresh();
     },
 
 
@@ -185,7 +185,7 @@ Ext.define('FW.view.AddressList', {
                                 addr = me.main.addWalletAddress(1,null,true,true);
                             },10);
                         }
-                    });                    
+                    });
                 }
                 if(btn=='import'){
                     var cb = function(address, privkey){

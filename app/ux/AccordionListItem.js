@@ -90,7 +90,7 @@
  *  });
  *
  */
-Ext.define('FW.ux.AccordionListItem', {
+Ext.define('C0banparty.wallet.ux.AccordionListItem', {
     extend: 'Ext.dataview.component.ListItem',
     xtype: 'accordionlistitem',
 

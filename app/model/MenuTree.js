@@ -1,7 +1,7 @@
 /*
  * MenuTree.js - Model
  */
-Ext.define('FW.model.MenuTree', {
+Ext.define('C0banparty.wallet.model.MenuTree', {
     extend: 'Ext.data.Model',
     config: {
         fields: [
@@ -10,4 +10,3 @@ Ext.define('FW.model.MenuTree', {
         ]
     }
 });
-

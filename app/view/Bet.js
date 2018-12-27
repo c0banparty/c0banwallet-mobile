@@ -1,12 +1,12 @@
 /*
- * Bet.js - View 
+ * Bet.js - View
  *
  * Handles displaying betting tools
  */
 
-Ext.define('FW.view.Bet', {
+Ext.define('C0banparty.wallet.view.Bet', {
     extend: 'Ext.Container',
-    
+
     config: {
         id: 'betView',
         layout: 'vbox',
@@ -30,13 +30,13 @@ Ext.define('FW.view.Bet', {
             }]
         }]
     },
-    
+
     // Handle initializing the screen
     initialize: function(){
         var me  = this,
             cfg = me.config;
         // Setup alias to main controller
-        me.main = FW.app.getController('Main');
+        me.main = C0banparty.wallet.app.getController('Main');
         me.tb   = me.down('fw-toptoolbar');
         // Call parent
         me.callParent();

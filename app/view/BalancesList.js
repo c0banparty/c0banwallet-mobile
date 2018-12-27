@@ -1,10 +1,10 @@
 /*
  * BalancesList.js - View
- * 
+ *
  * Display list of balances
  */
 
-Ext.define('FW.view.BalancesList', {
+Ext.define('C0banparty.wallet.view.BalancesList', {
     extend: 'Ext.dataview.List',
     xtype: 'fw-balanceslist',
 
@@ -21,7 +21,7 @@ Ext.define('FW.view.BalancesList', {
         itemTpl: new Ext.XTemplate(
             '<div class="fw-balanceslist-item">' +
                 '<div class="fw-balanceslist-icon">' +
-                    '<img src="https://xchain.io/icon/{[this.toUpper(values.asset)]}.png">' + 
+                    '<img src="https://xchain.io/icon/{[this.toUpper(values.asset)]}.png">' +
                 '</div>' +
                 '<div class="fw-balanceslist-info">' +
                     '<div class="fw-balanceslist-currency">{display_name}</div>' +
@@ -38,15 +38,17 @@ Ext.define('FW.view.BalancesList', {
                 numberFormat: function(values){
                     var fmt = '0,0',
                         qty = values.quantity;
-                    if(/\./.test(qty) || values.asset=='BTC')
+                    if(/\./.test(qty) || values.asset=='RYO')
                         fmt += '.00000000';
                     return numeral(qty).format(fmt);
                 },
                 priceFormat: function(values){
-                    var txt = '';
-                    if(values.estimated_value && values.estimated_value.usd!='0.00')
-                        var txt = '$' + numeral(values.estimated_value.usd).format('0,0.00');
-                    return txt;
+                    // todo
+                    return '';
+                    // var txt = '';
+                    // if(values.estimated_value && values.estimated_value.usd!='0.00')
+                    //     var txt = '$' + numeral(values.estimated_value.usd).format('0,0.00');
+                    // return txt;
                 }
             }
         ),
@@ -76,7 +78,7 @@ Ext.define('FW.view.BalancesList', {
                     me.setMasked(false);
                     me.refreshing = false;
                 };
-                me.main.getAddressBalances(FW.WALLET_ADDRESS.address, cb);
+                me.main.getAddressBalances(C0banparty.wallet.WALLET_ADDRESS.address, cb);
             }
         }]
     },
@@ -84,20 +86,20 @@ Ext.define('FW.view.BalancesList', {
     initialize: function(){
         var me  = this;
         // Setup alias to toolbar
-        me.main = FW.app.getController('Main');
+        me.main = C0banparty.wallet.app.getController('Main');
         me.tb   = me.down('fw-toptoolbar');
         // Display the menu button if we are on a phone
         if(me.main.deviceType=='phone')
             me.tb.menuBtn.show();
         // Display address label in titlebar, wrap at 220 pixels, display address on tap
-        me.tb.tb.setTitle(FW.WALLET_ADDRESS.label);
+        me.tb.tb.setTitle(C0banparty.wallet.WALLET_ADDRESS.label);
         var title = me.tb.tb.element.down('.x-title');
         title.setMaxWidth(220);
-        title.on('tap',function(){ me.main.showQRCodeView({ text: FW.WALLET_ADDRESS.address }); });
+        title.on('tap',function(){ me.main.showQRCodeView({ text: C0banparty.wallet.WALLET_ADDRESS.address }); });
         // Call parent function
         me.callParent();
         // Handle sorting currencies by type and name
-        // We do this so we show currencies (BTC,XCP) before assets
+        // We do this so we show currencies (RYO,XCB) before assets
         me.getStore().sort([{
             property : 'type',
             direction: 'ASC'

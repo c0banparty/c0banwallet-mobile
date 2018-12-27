@@ -1,12 +1,12 @@
 /*
- * Issuance.js - View 
+ * Issuance.js - View
  *
  * Display issuance form
  */
- 
-Ext.define('FW.view.Issuance', {
+
+Ext.define('C0banparty.wallet.view.Issuance', {
     extend: 'Ext.form.Panel',
-    
+
     config: {
         id: 'issuanceView',
         layout: 'vbox',
@@ -34,7 +34,6 @@ Ext.define('FW.view.Issuance', {
                     name: 'type',
                     options: [
                         {text: 'Alphabetical Name', value: 1},
-                        {text: 'Numeric Name',      value: 2},
                         {text: 'Subasset',          value: 3}
                     ],
                     listeners: {
@@ -103,7 +102,7 @@ Ext.define('FW.view.Issuance', {
                             }
                         }
                     }
-                }]                
+                }]
             },{
                 xtype: 'fw-transactionpriority',
                 margin: '0 0 0 0'
@@ -127,14 +126,14 @@ Ext.define('FW.view.Issuance', {
             }]
         }]
     },
-    
+
 
     // Handle initializing the screen
     initialize: function(){
         var me  = this,
             cfg = me.config;
         // Setup alias to main controller
-        me.main = FW.app.getController('Main');
+        me.main = C0banparty.wallet.app.getController('Main');
         me.tb   = me.down('fw-toptoolbar');
         // Setup aliases to the various fields
         me.type        = me.down('[name=type]');
@@ -183,12 +182,12 @@ Ext.define('FW.view.Issuance', {
             len     = vals.name.length,
             type    = vals.type,
             first   = vals.name.substr(0,1),
-            btc_bal = me.main.getBalance('BTC'),
-            xcp_bal = me.main.getBalance('XCP'),
-            fee_sat = me.main.getSatoshis(String(vals.feeAmount).replace(' BTC','')),
+            btc_bal = me.main.getBalance('RYO'),
+            xcp_bal = me.main.getBalance('XCB'),
+            fee_sat = me.main.getSatoshis(String(vals.feeAmount).replace(' RYO','')),
             btc_sat = me.main.getSatoshis(btc_bal),
             qty_sat = me.main.getSatoshis(vals.quantity);
-        // Validate the issuance data and display any 
+        // Validate the issuance data and display any
         if(vals.name==''){
             msg = 'You must enter a token name';
         } else if(type==1){
@@ -199,7 +198,7 @@ Ext.define('FW.view.Issuance', {
             else if(first=='A')
                 msg = 'Alphabetical tokens can not start with the letter A.';
             else if(xcp_bal<0.5)
-                msg = '0.5 XCP Required.<br/>Please fund this address with some XCP and try again.';
+                msg = '0.5 XCB Required.<br/>Please fund this address with some XCB and try again.';
         } else if(type==2){
             if(len<19||len>21)
                 msg = 'Numeric tokens must be between 19-21 characters long.';
@@ -238,14 +237,32 @@ Ext.define('FW.view.Issuance', {
                     me.priority.reset();
                 }
             };
-            me.main.cpIssuance(FW.WALLET_NETWORK, FW.WALLET_ADDRESS.address, vals.name, vals.description, vals.divisible, qty_sat, null, fee_sat, cb);
-        }        
+            me.main.cpIssuance(C0banparty.wallet.WALLET_NETWORK, C0banparty.wallet.WALLET_ADDRESS.address, vals.name, vals.description, vals.divisible, qty_sat, null, fee_sat, cb);
+        }
+
         // Make call to counterpartyChain API to check if asset already is registered
-        var host = (FW.WALLET_NETWORK==2) ? 'testnet.counterpartychain.io' : 'counterpartychain.io';
+        var serverinfo = C0banparty.wallet.COUNTERBLOCK_INFO,
+            network = (C0banparty.wallet.WALLET_NETWORK==1) ? 'mainnet' : (C0banparty.wallet.WALLET_NETWORK==2) ? 'testnet' : 'regtest',
+            url    = 'http://' + serverinfo[network].cpHost + ':' + serverinfo[network].cpPort + '/';
         me.main.ajaxRequest({
-            url: 'https://' + host + '/api/asset/' + vals.name,
+            url: url,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            jsonData: {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "method": "get_assets_info",
+                "params": {
+                    "assetsList": [vals.name]
+                }
+            },
             success: function(o){
-                if(o.success){
+                // console.log(o);
+                if (!o.result) {
+                    console.error("Unexpected error was occured. " + o.error.message);
+                }
+                else if(o.result.length > 0){
                     Ext.Msg.alert(null,'Token is already registered to a different address.');
                 } else {
                     // Confirm action with user
@@ -256,6 +273,10 @@ Ext.define('FW.view.Issuance', {
                 }
             }
         });
+    },
+
+    // Handle requesting transaction information
+    createAsset: function(data){
     }
 
 });

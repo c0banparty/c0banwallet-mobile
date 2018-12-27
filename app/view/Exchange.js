@@ -1,12 +1,12 @@
 /*
- * Exchange.js - View 
+ * Exchange.js - View
  *
- * Display decentralized exchange view 
+ * Display decentralized exchange view
  */
 
-Ext.define('FW.view.Exchange', {
+Ext.define('C0banparty.wallet.view.Exchange', {
     extend: 'Ext.Container',
-    
+
     config: {
         id: 'exchangeView',
         layout: 'vbox',
@@ -30,13 +30,13 @@ Ext.define('FW.view.Exchange', {
             }]
         }]
     },
-    
+
     // Handle initializing the screen
     initialize: function(){
         var me  = this,
             cfg = me.config;
         // Setup alias to main controller
-        me.main = FW.app.getController('Main');
+        me.main = C0banparty.wallet.app.getController('Main');
         me.tb   = me.down('fw-toptoolbar');
         // Setup aliases to the various fields
         // me.currency    = me.down('[name=currency]');

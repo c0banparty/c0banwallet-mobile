@@ -1,10 +1,10 @@
 /*
  * Balances.js - View
- * 
+ *
  * Display balances list and token info on tablet
  */
 
-Ext.define('FW.view.tablet.Balances', {
+Ext.define('C0banparty.wallet.view.tablet.Balances', {
     extend: 'Ext.Container',
 
     config: {

@@ -1,12 +1,12 @@
 /*
- * Receive.js - View 
+ * Receive.js - View
  *
  * Handle displaying a scannable QRCode
  */
 
-Ext.define('FW.view.Receive', {
+Ext.define('C0banparty.wallet.view.Receive', {
     extend: 'Ext.form.Panel',
-    
+
     config: {
         id: 'receiveView',
         layout: 'vbox',
@@ -44,7 +44,7 @@ Ext.define('FW.view.Receive', {
                 },{
                     label: 'Name',
                     name: 'asset',
-                    value: 'BTC',
+                    value: 'RYO',
                     readOnly: true
                 },{
                     xtype: 'fw-spinnerfield',
@@ -65,7 +65,7 @@ Ext.define('FW.view.Receive', {
                                     newVal = 0;
                                 // Handle updating amount
                                 if(!me.price.isDisabled() && me.tokenInfo.estimated_value.btc!='0.00000000'){
-                                    var price_usd = me.main.getCurrencyPrice('bitcoin','usd');
+                                    var price_usd = me.main.getCurrencyPrice('c0ban','usd');
                                     // Calculate amount via ((quantity_usd / btc_price_usd) / asset_btc)
                                     // We do this because it is more accurate than using the asset USD value
                                     var amount = ((numeral(newVal).value() / price_usd) / me.tokenInfo.estimated_value.btc);
@@ -94,7 +94,7 @@ Ext.define('FW.view.Receive', {
                                     cur = me.asset.getValue();
                                 // Handle updating price
                                 if(!me.price.isDisabled() && me.tokenInfo.estimated_value.btc!='0.00000000'){
-                                    var price_usd = me.main.getCurrencyPrice('bitcoin','usd');
+                                    var price_usd = me.main.getCurrencyPrice('c0ban','usd');
                                     // Calculate price via ((asset_btc_price * quantity) * current_btc_price)
                                     // We do this because it is more accurate than using the asset USD value
                                     var price = (me.tokenInfo.estimated_value.btc *  numeral(newVal).value()) * price_usd;
@@ -110,13 +110,13 @@ Ext.define('FW.view.Receive', {
             }]
         }]
     },
-    
+
     // Handle initializing the screen
     initialize: function(){
         var me  = this,
             cfg = me.config;
         // Setup alias to main controller
-        me.main = FW.app.getController('Main');
+        me.main = C0banparty.wallet.app.getController('Main');
         me.tb   = me.down('fw-toptoolbar');
         // Setup aliases to the various fields
         me.address    = me.down('[name=address]');
@@ -140,11 +140,11 @@ Ext.define('FW.view.Receive', {
             me.tb.backBtn.hide();
         }
         if(cfg.reset){
-            me.address.setValue(FW.WALLET_ADDRESS.address);
+            me.address.setValue(C0banparty.wallet.WALLET_ADDRESS.address);
             me.amount.reset();
             me.asset.reset();
         }
-        var asset = (cfg.asset) ? cfg.asset : 'BTC';
+        var asset = (cfg.asset) ? cfg.asset : 'RYO';
         me.asset.setValue(asset);
         me.getTokenInfo(asset);
         // Handle updating the QR Code
@@ -154,21 +154,21 @@ Ext.define('FW.view.Receive', {
     // Handle getting information on a specific token
     getTokenInfo: function(asset){
         var me = this;
-        if(asset=='BTC'){
-            var price_usd = me.main.getCurrencyPrice('bitcoin','usd'),
-                price_btc = me.main.getCurrencyPrice('counterparty','btc');
+        if(asset=='RYO'){
+            var price_usd = me.main.getCurrencyPrice('c0ban','usd'),
+                price_btc = me.main.getCurrencyPrice('c0banparty','ryo');
             me.tokenInfo = {
                 estimated_value : {
                     btc: 1.00000000,
                     usd: price_usd,
-                    xcp: (price_btc) ? numeral(1 / price_btc).format('0.00000000') : '0.00000000'
+                    xcb: (price_btc) ? numeral(1 / price_btc).format('0.00000000') : '0.00000000'
                 }
             };
             me.updateAmountField(asset);
         } else {
-            me.main.getTokenInfo(asset, function(o){ 
-                me.tokenInfo = o; 
-                if(String(o.asset_longname).trim().length)
+            me.main.getTokenInfo(asset, function(o){
+                me.tokenInfo = o;
+                if(o.asset_longname && String(o.asset_longname).trim().length)
                     me.asset.setValue(o.asset_longname);
                 me.updateAmountField(asset);
             });
@@ -179,7 +179,7 @@ Ext.define('FW.view.Receive', {
     updateAmountField: function(asset){
         var me      = this,
             store   = Ext.getStore('Balances'),
-            prefix  = FW.WALLET_ADDRESS.address.substr(0,5);
+            prefix  = C0banparty.wallet.WALLET_ADDRESS.address.substr(0,5);
             balance = 0;
         // Find balance in store
         store.each(function(item){
@@ -193,25 +193,20 @@ Ext.define('FW.view.Receive', {
             step = (div) ? 0.01 : 1;
         me.amount.setDecimalPrecision(dec);
         me.amount.setStepValue(step);
-        // enable/disable the field based on if the asset has any known value
-        if(me.tokenInfo.estimated_value.btc!='0.00000000'){
-            me.price.enable();
-        } else {
-            me.price.disable();
-        }
+        me.price.disable();
     },
 
 
-    // Handle updating/displaying a QR code 
+    // Handle updating/displaying a QR code
     updateQRCode: function(){
         var me   = this,
             vals = me.getValues(),
-            txt  = (vals.asset=='BTC') ? 'bitcoin' : 'counterparty',
+            txt  = (vals.asset=='RYO') ? 'c0ban' : 'c0banparty',
             amt  = String(vals.amount).replace(/\,/g,''),
             q    = '',
             o    = {};
         txt +=  ':' + vals.address;
-        if(vals.asset!='BTC')
+        if(vals.asset!='RYO')
             o.asset = vals.asset;
         if(amt>0)
             o.amount = amt;

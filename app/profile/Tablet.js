@@ -1,9 +1,9 @@
 /*
  * Tablet.js - Profile
- * 
+ *
  * Handle defining tablet profile and any phone-specific views
  */
- Ext.define('FW.profile.Tablet', {
+ Ext.define('C0banparty.wallet.profile.Tablet', {
     extend: 'Ext.app.Profile',
 
     config: {

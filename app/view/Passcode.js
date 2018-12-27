@@ -1,10 +1,10 @@
 /*
  * Passcode.js - View
- * 
+ *
  * Handles displaying a numeric keypad to collect a passcode
  */
 
-Ext.define('FW.view.Passcode', {
+Ext.define('C0banparty.wallet.view.Passcode', {
     extend: 'Ext.Panel',
     requires: [
         'Ext.MessageBox',
@@ -72,7 +72,7 @@ Ext.define('FW.view.Passcode', {
         me.tb           = me.down('[itemId=toolbar]');
         me.btnContainer = me.down('[itemId=buttons]');
         me.indicator    = me.down('[itemId=indicator]');
-        // Setup alias on passcode indicator element 
+        // Setup alias on passcode indicator element
         me.indicator.on('painted', function(el){
             if(!me.indicatorEl)
                 me.indicatorEl = el.down('.passcode-indicator');
@@ -130,7 +130,7 @@ Ext.define('FW.view.Passcode', {
 
     // Handle setting passcode window size
     setWindowSize: function(){
-        // Handle resizing passcode panel        
+        // Handle resizing passcode panel
         var me = this,
             vp = Ext.Viewport,
             o  = vp.getOrientation(),
@@ -143,7 +143,7 @@ Ext.define('FW.view.Passcode', {
         }
     },
 
-    // Handle returning a digit button config 
+    // Handle returning a digit button config
     getDigitKey: function(digit){
         var me  = this;
         // Define the basic button config

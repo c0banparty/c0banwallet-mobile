@@ -1,12 +1,12 @@
 /*
  * Transactions.js - Store
  */
-Ext.define('FW.store.Transactions', {
+Ext.define('C0banparty.wallet.store.Transactions', {
     extend: 'Ext.data.Store',
     requires:['Ext.data.proxy.LocalStorage'],
 
     config: {
-        model: 'FW.model.Transactions',
+        model: 'C0banparty.wallet.model.Transactions',
         autoLoad: true,
         autoSync: true
         // Set this proxy to store data in localStorage

@@ -1,15 +1,15 @@
 /*
  * History.js - View
- * 
+ *
  * Handles displaying transaction history
  */
 
-Ext.define('FW.view.History', {
+Ext.define('C0banparty.wallet.view.History', {
     extend: 'Ext.Container',
 
     requires:[
-        'FW.view.phone.History',
-        'FW.view.tablet.History'
+        'C0banparty.wallet.view.phone.History',
+        'C0banparty.wallet.view.tablet.History'
     ],
 
     config: {
@@ -22,9 +22,9 @@ Ext.define('FW.view.History', {
     initialize: function(){
         var me = this;
         // Setup alias to main controller
-        me.main  = FW.app.getController('Main');
+        me.main  = C0banparty.wallet.app.getController('Main');
         // Add view based on device type
-        me.add({ xclass:'FW.view.' + me.main.deviceType + '.History' });
+        me.add({ xclass:'C0banparty.wallet.view.' + me.main.deviceType + '.History' });
         // Setup some aliases to the various components
         me.list  = me.down('fw-transactionslist');
         me.info  = me.down('fw-transactioninfo');

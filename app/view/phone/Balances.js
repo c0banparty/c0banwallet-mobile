@@ -1,9 +1,9 @@
 /*
  * Balances.js - View
- * 
+ *
  * Display balances list and token info on phone
  */
-Ext.define('FW.view.phone.Balances', {
+Ext.define('C0banparty.wallet.view.phone.Balances', {
     extend: 'Ext.Container',
 
     config: {

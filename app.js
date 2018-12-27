@@ -11,18 +11,17 @@
 */
 
 Ext.application({
-    name: 'FW',
+    name: 'C0banparty.wallet',
 
     requires: [
         'Ext.device.Device',
         'Ext.MessageBox',
-        'Ext.device.Device',
-        'FW.ux.AccordionList',
-        'FW.ux.AccordionListItem',
+        'C0banparty.wallet.ux.AccordionList',
+        'C0banparty.wallet.ux.AccordionListItem',
         'Ext.field.Spinner',
-        'FW.view.field.Action',
-        'FW.view.field.Spinner',
-        'FW.view.field.Select'
+        'C0banparty.wallet.view.field.Action',
+        'C0banparty.wallet.view.field.Spinner',
+        'C0banparty.wallet.view.field.Select'
     ],
 
     controllers: [
@@ -31,7 +30,7 @@ Ext.application({
     ],
 
     profiles: [
-        'Phone', 
+        'Phone',
         'Tablet'
     ],
 
@@ -102,7 +101,7 @@ Ext.application({
     },
 
     onUpdated: function() {
-        FW.app.getController('Main').clearAppCache();
+        C0banparty.wallet.app.getController('Main').clearAppCache();
         Ext.Msg.confirm(
             "Application Update",
             "This application has just successfully been updated to the latest version. Reload now?",

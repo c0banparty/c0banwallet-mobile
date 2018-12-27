@@ -1,15 +1,15 @@
 /*
  * Balances.js - View
- * 
+ *
  * Display balances list
  */
 
-Ext.define('FW.view.Balances', {
+Ext.define('C0banparty.wallet.view.Balances', {
     extend: 'Ext.Container',
 
     requires:[
-        'FW.view.phone.Balances',
-        'FW.view.tablet.Balances'
+        'C0banparty.wallet.view.phone.Balances',
+        'C0banparty.wallet.view.tablet.Balances'
     ],
 
     config: {
@@ -22,9 +22,9 @@ Ext.define('FW.view.Balances', {
     initialize: function(){
         var me = this;
         // Setup alias to main controller
-        me.main  = FW.app.getController('Main');
+        me.main  = C0banparty.wallet.app.getController('Main');
         // Add view based on device type
-        me.add({ xclass:'FW.view.' + me.main.deviceType + '.Balances' });
+        me.add({ xclass:'C0banparty.wallet.view.' + me.main.deviceType + '.Balances' });
         // Setup some aliases to the various components
         me.list  = me.down('fw-balanceslist');
         me.info  = me.down('fw-tokeninfo');

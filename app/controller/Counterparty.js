@@ -1,9 +1,9 @@
 /*
  * Counterparty.js - Controller
- * 
+ *
  * Defines most of the counterparty-related functions
  */
-Ext.define('FW.controller.Counterparty', {
+Ext.define('C0banparty.wallet.controller.Counterparty', {
     extend: 'Ext.app.Controller',
     requires: [
         'Ext.MessageBox',
@@ -13,16 +13,17 @@ Ext.define('FW.controller.Counterparty', {
     // Setup alias back to main controller
     launch: function(){
         var me = this;
-        me.main = FW.app.getController('Main');
+        me.main = C0banparty.wallet.app.getController('Main');
     },
 
 
     // Handle sending a JSON-RPC request to a counterparty server
     request: function(request, callback){
         var me   = this,
-            net  = (FW.WALLET_NETWORK==2) ? 'testnet' : 'mainnet',
-            info = FW.SERVER_INFO[net],
-            url  = ((info.cpSSL) ? 'https' : 'http') + '://' + info.cpHost + ':' + info.cpPort + '/api/',
+            net  = (C0banparty.wallet.WALLET_NETWORK==1) ? 'mainnet' : (C0banparty.wallet.WALLET_NETWORK==2) ? 'testnet' : 'regtest',
+            info = C0banparty.wallet.SERVER_INFO[net],
+            // url  = ((info.cpSSL) ? 'https' : 'http') + '://' + info.cpHost + ':' + info.cpPort + '/api/',
+            url  = 'http://' + info.cpHost + ':' + info.cpPort + '/api/',
             auth = $.base64.btoa(info.cpUser + ':' + info.cpPass);
         // Stash the original success function for use later
         var successFn = request.success;
@@ -31,7 +32,7 @@ Ext.define('FW.controller.Counterparty', {
             // Handle processing successfull responses
             success: function(res){
                 var o = res;
-                // Handle trying to decode the response text 
+                // Handle trying to decode the response text
                 if(res.responseText){
                     try {
                         var o = Ext.decode(res.responseText);
@@ -54,10 +55,11 @@ Ext.define('FW.controller.Counterparty', {
         Ext.Ajax.request(Ext.merge(request, {
             url: url,
             method: 'POST',
+            cors: true,
             timeout: 60000,             // timeout after 60 seconds of waiting
             useDefaultXhrHeader: false, // Set to false to make CORS requests (cross-domain)
             headers: {
-                'Authorization': 'Basic ' + auth, 
+                'Authorization': 'Basic ' + auth,
                 'Content-Type': 'application/json; charset=UTF-8'
             },
             success: fn.success,        // Success function called when we receive a success response
@@ -85,7 +87,7 @@ Ext.define('FW.controller.Counterparty', {
                 },
                 jsonrpc: "2.0",
                 id: 0
-            },            
+            },
             success: function(o){
                 if(callback)
                     callback(o);
@@ -112,7 +114,7 @@ Ext.define('FW.controller.Counterparty', {
                 },
                 jsonrpc: "2.0",
                 id: 0
-            },            
+            },
             success: function(o){
                 if(callback)
                     callback(o);
@@ -141,7 +143,7 @@ Ext.define('FW.controller.Counterparty', {
                 },
                 jsonrpc: "2.0",
                 id: 0
-            },            
+            },
             success: function(o){
                 if(callback)
                     callback(o);
@@ -150,8 +152,7 @@ Ext.define('FW.controller.Counterparty', {
 
     }
 
-    
+
 
 
 });
-    

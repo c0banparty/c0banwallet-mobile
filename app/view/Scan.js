@@ -1,12 +1,12 @@
 /*
- * FW.view.Scan.js - View 
+ * C0banparty.wallet.view.Scan.js - View 
  *
  * Handle displaying a view requesting the user to scan a QR code
  */
 
-Ext.define('FW.view.Scan', {
+Ext.define('C0banparty.wallet.view.Scan', {
     extend: 'Ext.Panel',
-    xtype: 'fw-scanqrcode', 
+    xtype: 'fw-scanqrcode',
 
     config: {
         cls: 'no-rounded-edges',
@@ -42,7 +42,7 @@ Ext.define('FW.view.Scan', {
     initialize: function(){
         var me  = this,
             cfg = me.config;
-        me.main = FW.app.getController('Main');
+        me.main = C0banparty.wallet.app.getController('Main');
         if(cfg.callback)
             me.callback = cfg.callback;
         me.callParent();
@@ -50,7 +50,7 @@ Ext.define('FW.view.Scan', {
     },
 
 
-    // Handle updating the view 
+    // Handle updating the view
     updateView: function(cfg){
         var me = this;
     },
@@ -71,7 +71,7 @@ Ext.define('FW.view.Scan', {
         try {
             $('#reader').html5_qrcode_stop();
         } catch(e){
-            console.log('reader error');        
+            console.log('reader error');
         }
         vp.remove(me,true);
         vp.setMasked(false);
@@ -97,7 +97,7 @@ Ext.define('FW.view.Scan', {
         // console.log('onError=',error);
     },
 
-    
+
     // Handle scanning video errors
     onVideoError: function(error){
         // console.log('onVideoError=',error);

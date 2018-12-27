@@ -1,10 +1,10 @@
 /*
- * FW.view.Passphrase.js - View 
+ * C0banparty.wallet.view.Passphrase.js - View 
  *
  * Handle displaying a users wallet passphrase
  */
 
-Ext.define('FW.view.Passphrase', {
+Ext.define('C0banparty.wallet.view.Passphrase', {
     extend: 'Ext.Panel',
     xtype: 'fw-passphrase',
 
@@ -95,7 +95,7 @@ Ext.define('FW.view.Passphrase', {
     initialize: function(){
         var me  = this,
             cfg = me.config;
-        me.main = FW.app.getController('Main');
+        me.main = C0banparty.wallet.app.getController('Main');
         // Adjust the box to be wider for tablets
         var w  = (me.main.deviceType=='tablet') ? 400 : '90%'
         me.setWidth(w);
@@ -113,7 +113,7 @@ Ext.define('FW.view.Passphrase', {
 
     getPassphase: function(){
         var me = this;
-        return me.passphrase.getData().phrase;        
+        return me.passphrase.getData().phrase;
     }
 
 

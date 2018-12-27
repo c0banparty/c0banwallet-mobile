@@ -1,10 +1,10 @@
 /*
- * Welcome.js - View 
+ * Welcome.js - View
  *
  * Welcome screen to help users get wallet setup
  */
 
-Ext.define('FW.view.Welcome', {
+Ext.define('C0banparty.wallet.view.Welcome', {
     extend: 'Ext.Container',
 
     config: {
@@ -68,7 +68,7 @@ Ext.define('FW.view.Welcome', {
 
     initialize: function(){
         var me = this;
-        me.main = FW.app.getController('Main');
+        me.main = C0banparty.wallet.app.getController('Main');
         me.spinner = me.down('[itemId=spinner]')
         me.callParent();
     },
@@ -111,5 +111,3 @@ Ext.define('FW.view.Welcome', {
     }
 
 });
-
-

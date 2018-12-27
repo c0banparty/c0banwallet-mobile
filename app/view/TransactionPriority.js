@@ -1,10 +1,10 @@
 /*
  * TransactionPriority.js - View
- * 
+ *
  * Handle displaying transaction priority fieldset
  */
 
- Ext.define('FW.view.TransactionPriority', {
+ Ext.define('C0banparty.wallet.view.TransactionPriority', {
     extend: 'Ext.form.FieldSet',
     xtype: 'fw-transactionpriority',
 
@@ -51,7 +51,7 @@
                         me.setType(val);
                         me.setFee(val);
                     }
-                }                        
+                }
             },{
                 width: 70,
                 xtype: 'container',
@@ -80,7 +80,7 @@
         var me  = this,
             cfg = me.config;
         // Setup alias to main controller
-        me.main = FW.app.getController('Main');
+        me.main = C0banparty.wallet.app.getController('Main');
         // Setup aliases to the various fields
         me.feePriority = me.down('[name=feePriority]');
         me.feeType     = me.down('[name=feeType]');
@@ -90,7 +90,7 @@
     },
 
 
-    // Handle updating fee type     
+    // Handle updating fee type
     setType: function(val){
         var me  = this,
             txt = '';
@@ -104,7 +104,7 @@
     // Handle determining the miner fee
     setFee: function(val){
         var me  = this,
-            o   = FW.MINER_FEES,
+            o   = C0banparty.wallet.MINER_FEES,
             avg = 530,    // Average transaction size (https://tradeblock.com/bitcoin/historical/1h-f-tsize_per_avg-01101)
             fee = 0.0001; // Minimum transaction fee
         if(o){

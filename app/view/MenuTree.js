@@ -4,8 +4,8 @@
  * Display a menu list with collapsible folders
  */
 
-Ext.define('FW.view.MenuTree', {
-    extend: 'FW.ux.AccordionList',
+Ext.define('C0banparty.wallet.view.MenuTree', {
+    extend: 'C0banparty.wallet.ux.AccordionList',
     xtype: 'fw-menutree',
     requires:[
         'Ext.data.TreeStore'
@@ -14,19 +14,19 @@ Ext.define('FW.view.MenuTree', {
     config: {
         fullscreen: true,
         singleMode: false,
-        headerCloseTpl: '<div class="fw-sidemenu header">' + 
+        headerCloseTpl: '<div class="fw-sidemenu header">' +
                             '<div class="float-left fa {icon}" style="margin-right:5px;"></div>' +
-                            '<div class="float-left overflow-hidden" style="width:160px;">{0}</div>' + 
+                            '<div class="float-left overflow-hidden" style="width:160px;">{0}</div>' +
                             '<div class="float-left right" style="margin-right:0px;left: 5px;"></div>' +
                         '</div>',
-        headerOpenTpl: '<div class="fw-sidemenu header">' + 
+        headerOpenTpl: '<div class="fw-sidemenu header">' +
                             '<div class="float-left fa {icon}" style="margin-right:5px;"></div>' +
-                            '<div class="float-left overflow-hidden" style="width:160px;">{0}</div>' + 
+                            '<div class="float-left overflow-hidden" style="width:160px;">{0}</div>' +
                             '<div class="float-left down" style="margin-right:0px;"></div>' +
                         '</div>',
-        contentItemTpl: '<div class="fw-sidemenu">' + 
+        contentItemTpl: '<div class="fw-sidemenu">' +
                             '<div class="float-left fa {icon}" style="margin-right:5px;"></div>' +
-                            '<div class="float-left overflow-hidden nowrap ellipsis height-1-3em" style="width:170px;">{0}</div>' + 
+                            '<div class="float-left overflow-hidden nowrap ellipsis height-1-3em" style="width:170px;">{0}</div>' +
                         '</div>',
         listConfig: {
             itemHeight: 0,
@@ -41,7 +41,7 @@ Ext.define('FW.view.MenuTree', {
         if(cfg.store)
             me.setStore(cfg.store);
         me.vp   = Ext.Viewport;
-        me.main = FW.app.getController('Main');
+        me.main = C0banparty.wallet.app.getController('Main');
         me.on('leafitemtap', me.onLeafItemTap, me);
         me.callParent();
     },
@@ -50,7 +50,7 @@ Ext.define('FW.view.MenuTree', {
     onLeafItemTap: function(list, index, target, rec, e){
         var me   = this,
             o    = rec.raw;
-        // Handle hiding the 
+        // Handle hiding the
         me.vp.toggleMenu('right');
         // Handle user specifying a custom function
         if(typeof o.handler == 'function'){

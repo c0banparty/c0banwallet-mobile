@@ -1,14 +1,14 @@
 /*
  * Addresses.js - Model
  */
-Ext.define('FW.model.Addresses', {
+Ext.define('C0banparty.wallet.model.Addresses', {
     extend: 'Ext.data.Model',
     config: {
         fields: [
             {name: 'id',      type: 'string'}, // address id
             {name: 'prefix',  type: 'string'}, // HD Wallet Prefix
             {name: 'index',   type: 'int'},    // Wallet Address index
-            {name: 'network', type: 'int'},    // Network (1=Mainnet, 2=Testnet)
+            {name: 'network', type: 'int'},    // Network (1=Mainnet, 2=Testnet, 3=Regtest)
             {name: 'address', type: 'string'}, // Address
             {name: 'label',   type: 'label'}   // Address Label
         ],
@@ -17,6 +17,6 @@ Ext.define('FW.model.Addresses', {
             type: 'localstorage',
             id: 'Addresses',
             idProperty: 'id'
-        }        
+        }
     }
 });

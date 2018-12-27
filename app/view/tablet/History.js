@@ -1,10 +1,10 @@
 /*
  * History.js - View
- * 
+ *
  * Display transaction history info on phone
  */
 
-Ext.define('FW.view.tablet.History', {
+Ext.define('C0banparty.wallet.view.tablet.History', {
     extend: 'Ext.Container',
 
     config: {
@@ -47,4 +47,3 @@ Ext.define('FW.view.tablet.History', {
     }
 
 });
-

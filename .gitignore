@@ -3,6 +3,7 @@
 /resources/sass/.sass-cache
 /ssl
 /touch
+/cordova
 /phonegap
 /build
 /bootstrap.js

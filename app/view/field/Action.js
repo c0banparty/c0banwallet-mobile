@@ -1,10 +1,10 @@
 /*
  * Action.js - Field
- * 
+ *
  * Field with an action button to the right button
  */
 
- Ext.define('FW.view.field.Action', {
+ Ext.define('C0banparty.wallet.view.field.Action', {
     extend: 'Ext.Container',
     xtype: 'fw-actionfield',
 

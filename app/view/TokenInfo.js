@@ -1,17 +1,17 @@
 /*
  * TokenInfo.js - View
- * 
+ *
  * Handle displaying information about the token (name, supply, description, etc).
  */
 
- Ext.define('FW.view.TokenInfo', {
+ Ext.define('C0banparty.wallet.view.TokenInfo', {
     extend: 'Ext.Container',
     xtype: 'fw-tokeninfo',
 
     requires:[
         'Ext.Img',
-        'FW.view.phone.TokenInfo',
-        'FW.view.tablet.TokenInfo'
+        'C0banparty.wallet.view.phone.TokenInfo',
+        'C0banparty.wallet.view.tablet.TokenInfo'
     ],
 
     config: {
@@ -23,9 +23,9 @@
     initialize: function(){
         var me = this;
         // Setup some aliases
-        me.main = FW.app.getController('Main');
+        me.main = C0banparty.wallet.app.getController('Main');
         // Add view based on device type
-        me.add({ xclass:'FW.view.' + me.main.deviceType + '.TokenInfo' });
+        me.add({ xclass:'C0banparty.wallet.view.' + me.main.deviceType + '.TokenInfo' });
         // Now that we have added the correct view, setup some aliases to various components
         me.tb          = me.down('fw-toptoolbar');
         me.image       = me.down('[itemId=image]');
@@ -33,8 +33,8 @@
         me.balance     = me.down('[itemId=balance]');
         me.description = me.down('[itemId=description]');
         me.supply      = me.down('[itemId=supply]');
-        me.xcp         = me.down('[itemId=xcp]');
-        me.btc         = me.down('[itemId=btc]');
+        me.xcp         = me.down('[itemId=xcb]');
+        me.btc         = me.down('[itemId=ryo]');
         me.usd         = me.down('[itemId=usd]');
         me.divisible   = me.down('[itemId=divisible]');
         me.locked      = me.down('[itemId=locked]');
@@ -55,7 +55,7 @@
             });
         });
         // Handle displaying current address and currency in QRCode
-        me.receiveBtn.on('tap',function(btn){ 
+        me.receiveBtn.on('tap',function(btn){
             me.main.showTool('receive', {
                 reset: true,
                 asset: me.getData().asset
@@ -122,23 +122,23 @@
     // Handle requesting basic asset information
     getTokenInfo: function(data){
         var me   = this;
-        if(data.asset=='BTC'){
-            var price_usd = me.main.getCurrencyPrice('bitcoin','usd'),
+        if(data.asset=='RYO'){
+            var price_usd = me.main.getCurrencyPrice('c0ban','usd'),
                 values = Ext.apply(data.estimated_value,{
                 usd: price_usd
             });
             me.updateData({
-                asset: 'BTC',
+                asset: 'RYO',
                 quantity: data.quantity,
-                supply: '21000000.00000000',
-                website: 'http://bitcoin.org',
+                supply: '88000000.00000000',
+                website: 'https://www.c0ban.co',
                 divisible: true,
                 locked: true,
-                description: 'Bitcoin is digital money',
+                description: 'c0ban is digital money',
                 estimated_value: values
             });
         } else {
-            // Set loading mask on panel to indicate we are loading 
+            // Set loading mask on panel to indicate we are loading
             me.setMasked({
                 xtype: 'loadmask',
                 cls: 'fw-panel',
@@ -150,12 +150,13 @@
                 var desc = o.description;
                 if(me.main.isUrl(desc))
                     o.website = desc;
-                if(data.asset=='XCP'){
-                    o.website = 'https://counterparty.io';
+                if(data.asset=='XCB'){
+                    o.website = 'https://wallet.c0banparty.co';
                     o.locked = true;
-                    o.description = 'Counterparty extends Bitcoin in new and powerful ways.';                       
+                    o.description = 'c0banparty extends c0ban in new and powerful ways.';
                 }
-                me.updateData(Ext.apply(o,{ 
+                o.supply = o.supply * 0.00000001;
+                me.updateData(Ext.apply(o,{
                     quantity: data.quantity,
                     asset: data.asset
                 }));
@@ -187,6 +188,6 @@
                 // if(o.image)
                 //     me.image.setSrc(o.image);
             }
-        });            
+        });
     }
 });

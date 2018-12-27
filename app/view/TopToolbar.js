@@ -4,12 +4,12 @@
  * Define a top toolbar which is used by most views
  */
 
-Ext.define('FW.view.TopToolbar', {
+Ext.define('C0banparty.wallet.view.TopToolbar', {
     // extend container instead of toolbar to fix sencha touch scrollbar issue (iOS native)
     // extend: 'Ext.Toolbar',
     extend: 'Ext.Container',
     xtype: 'fw-toptoolbar',
-    
+
     config: {
         layout: 'fit',
         docked: 'top',
@@ -58,7 +58,7 @@ Ext.define('FW.view.TopToolbar', {
                 itemId: 'menuButton',
                 hidden: true,
                 handler: function(cmp){
-                    FW.app.getController('Main').showMainMenu();
+                    C0banparty.wallet.app.getController('Main').showMainMenu();
                 }
             }]
         }]

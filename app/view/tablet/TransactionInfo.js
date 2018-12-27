@@ -1,9 +1,9 @@
 /*
  * TransactionInfo.js - View
- * 
+ *
  * Display transaction information on tablet
  */
- Ext.define('FW.view.tablet.TransactionInfo', {
+ Ext.define('C0banparty.wallet.view.tablet.TransactionInfo', {
     extend: 'Ext.Container',
 
     config: {

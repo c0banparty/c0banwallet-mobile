@@ -1,16 +1,16 @@
 /*
  * Spinner.js - Field
- * 
+ *
  * Spinner field to support floating numbers
  */
-Ext.define('FW.view.field.Spinner', {
+Ext.define('C0banparty.wallet.view.field.Spinner', {
     extend: 'Ext.field.Spinner',
     xtype: 'fw-spinnerfield',
-    
+
     config : {
         component: {
             type: 'tel',    // Use 'tel' so we bring up simple number keyboard
-            disabled: false, 
+            disabled: false,
             readOnly: false  // Fixes issue on android that prevents editing of numbers
         },
         decimalPrecision: 0, // default to 0 (integers only)
@@ -18,7 +18,7 @@ Ext.define('FW.view.field.Spinner', {
             // when user blurs field, re-set value to enforce formatting
             blur: function(cmp){
                 cmp.setValue(cmp.getValue());
-            }            
+            }
         }
     },
 

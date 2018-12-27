@@ -1,10 +1,10 @@
 /*
  * TransactionsList.js - View
- * 
+ *
  * Handles displaying transaction history list
  */
 
-Ext.define('FW.view.TransactionsList', {
+Ext.define('C0banparty.wallet.view.TransactionsList', {
     extend: 'Ext.dataview.List',
     xtype: 'fw-transactionslist',
 
@@ -34,14 +34,14 @@ Ext.define('FW.view.TransactionsList', {
                 getIcon: function(values){
                     var type = values.type,
                         src  = 'resources/images/icons/btc.png';
-                    if(type=='bet'){
+                    if(type=='bets'){
                         src = 'resources/images/icons/xcp.png';
-                    } else if(type=='broadcast'){
+                    } else if(type=='broadcasts'){
                         src = 'resources/images/icons/broadcast.png';
-                    } else if(type=='dividend'){
+                    } else if(type=='dividends'){
                         src = 'resources/images/icons/dividend.png';
-                    } else if((type=='send'||type=='order'||type=='issuance') && values.asset!='BTC'){
-                        src = 'https://xchain.io/icon/'  + String(values.asset).toUpperCase() + '.png';
+                    // } else if((type=='send'||type=='order'||type=='issuance') && values.asset!='RYO'){
+                    //     src = 'https://xchain.io/icon/'  + String(values.asset).toUpperCase() + '.png';
                     }
                     icon = '<img src="' + src + '"/>';
                     return icon;
@@ -51,27 +51,28 @@ Ext.define('FW.view.TransactionsList', {
                     return String(val).toLowerCase();
                 },
                 getDescription: function(values){
+                    // console.log("getDescription", values);
                     var str  = '',
                         fmt  = '0,0',
                         type = values.type,
                         amt  = String(values.quantity).replace('-','');
-                    if(type=='send'){
+                    if(type=='send' || type=='sends'){
                         str = (/\-/.test(values.quantity)) ? 'Sent ' : 'Received ';
-                    } else if(type=='bet'){
+                    } else if(type=='bets'){
                         str = 'Bet ';
-                    } else if(type=='broadcast'){
+                    } else if(type=='broadcasts'){
                         str = 'Counterparty Broadcast';
-                    } else if(type=='burn'){
+                    } else if(type=='burns'){
                         str = 'Burned ';
-                    } else if(type=='dividend'){
+                    } else if(type=='dividends'){
                         str = 'Paid Dividend on ';
-                    } else if(type=='issuance'){
+                    } else if(type=='issuances'){
                         str = 'Counterparty Issuance';
-                    } else if(type=='order'){
+                    } else if(type=='orders'){
                         str = 'Order - Buy ';
                     }
                     if(type=='send'||type=='bet'||type=='burn'||type=='order'){
-                        if(/\./.test(amt) || values.asset=='BTC')
+                        if(/\./.test(amt) || values.asset=='RYO')
                             fmt += '.00000000';
                         str += numeral(amt).format(fmt);
                     }
@@ -80,9 +81,9 @@ Ext.define('FW.view.TransactionsList', {
                 getClasses: function(values){
                     var type = values.type,
                         cls  = 'fw-transactionslist-item ';
-                    if(type=='send')
+                    if(type=='send' || type=='sends')
                         cls += (/\-/.test(values.quantity)) ? ' fw-transactionslist-sent' : ' fw-transactionslist-received';
-                    if(type=='bet'||type=='burn')
+                    if(type=='bets'||type=='burns')
                         cls += ' fw-transactionslist-sent';
                     return cls;
                 },
@@ -121,28 +122,28 @@ Ext.define('FW.view.TransactionsList', {
                     me.setMasked(false);
                     me.refreshing = false;
                 };
-                me.main.getAddressHistory(FW.WALLET_ADDRESS.address, cb);
-            }        
+                me.main.getAddressHistory(C0banparty.wallet.WALLET_ADDRESS.address, cb);
+            }
         }]
     },
 
     initialize: function(){
         var me  = this;
         // Setup alias to toolbar
-        me.main = FW.app.getController('Main');
+        me.main = C0banparty.wallet.app.getController('Main');
         me.tb   = me.down('fw-toptoolbar');
         // Display the menu button if we are on a phone
         if(me.main.deviceType=='phone')
             me.tb.menuBtn.show();
         // Display address label in titlebar, wrap at 220 pixels, display address on tap
-        me.tb.tb.setTitle(FW.WALLET_ADDRESS.label);
+        me.tb.tb.setTitle(C0banparty.wallet.WALLET_ADDRESS.label);
         var title = me.tb.tb.element.down('.x-title');
         title.setMaxWidth(220);
-        title.on('tap',function(){ me.main.showQRCodeView({ text: FW.WALLET_ADDRESS.address }); });
+        title.on('tap',function(){ me.main.showQRCodeView({ text: C0banparty.wallet.WALLET_ADDRESS.address }); });
         // Call parent function
         me.callParent();
         // Handle sorting currencies by type and name
-        // We do this so we show currencies (BTC,XCP) before assets
+        // We do this so we show currencies (RYO,XCB) before assets
         me.getStore().sort([{
             property : 'time',
             direction: 'DESC'

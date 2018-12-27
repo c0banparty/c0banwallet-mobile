@@ -1,9 +1,9 @@
 /*
  * Phone.js - Profile
- * 
+ *
  * Handle defining phone profile and any phone-specific views
  */
- Ext.define('FW.profile.Phone', {
+ Ext.define('C0banparty.wallet.profile.Phone', {
     extend: 'Ext.app.Profile',
 
     config: {

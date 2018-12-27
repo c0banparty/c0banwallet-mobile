@@ -1,12 +1,12 @@
 /*
- * Sign.js - View 
+ * Sign.js - View
  *
  * Handle displaying sign message view
  */
- 
-Ext.define('FW.view.Sign', {
+
+Ext.define('C0banparty.wallet.view.Sign', {
     extend: 'Ext.form.Panel',
-    
+
     config: {
         id: 'signView',
         layout: 'vbox',
@@ -53,7 +53,7 @@ Ext.define('FW.view.Sign', {
                     maxrows: 3,
                     label: 'Signature',
                     name: 'signature'
-                }]                
+                }]
             },{
                 xtype: 'container',
                 layout: 'hbox',
@@ -74,7 +74,7 @@ Ext.define('FW.view.Sign', {
                     margin: '5 0 0 5',
                     text: 'Copy',
                     itemId: 'copy',
-                    cls: 'x-copy-button', 
+                    cls: 'x-copy-button',
                     iconCls: 'fa fa-copy',
                     ui: 'action',
                     listeners: {
@@ -101,14 +101,14 @@ Ext.define('FW.view.Sign', {
             }]
         }]
     },
-    
+
 
     // Handle initializing the screen
     initialize: function(){
         var me  = this,
             cfg = me.config;
         // Setup alias to main controller
-        me.main = FW.app.getController('Main');
+        me.main = C0banparty.wallet.app.getController('Main');
         me.tb   = me.down('fw-toptoolbar');
         // Setup aliases to the various fields
         // me.address   = me.down('[name=address]');
@@ -133,7 +133,7 @@ Ext.define('FW.view.Sign', {
         }
         // Handle resetting all fields back to default
         if(cfg.reset){
-            // me.address.setValue(FW.WALLET_ADDRESS.address);
+            // me.address.setValue(C0banparty.wallet.WALLET_ADDRESS.address);
             me.message.setValue('');
             me.signature.setValue('');
             me.isSigned = false;
@@ -146,12 +146,12 @@ Ext.define('FW.view.Sign', {
     // Handle signing message and updating signature field
     signMessage: function(){
         var me   = this,
-            addr = FW.WALLET_ADDRESS.address,
+            addr = C0banparty.wallet.WALLET_ADDRESS.address,
             mesg = me.message.getValue();
         if(!mesg){
             Ext.Msg.alert(null,'You must enter a message to sign');
         } else {
-            var signature = me.main.signMessage(FW.WALLET_NETWORK, addr, mesg);
+            var signature = me.main.signMessage(C0banparty.wallet.WALLET_NETWORK, addr, mesg);
             me.signature.setValue(signature);
             me.isSigned = true;
         }
@@ -162,7 +162,7 @@ Ext.define('FW.view.Sign', {
                 txt = '';
         if(me.isSigned){
             txt += 'Message : ' + me.message.getValue() + "\n";
-            txt += 'Address : ' + FW.WALLET_ADDRESS.address + "\n";
+            txt += 'Address : ' + C0banparty.wallet.WALLET_ADDRESS.address + "\n";
             txt += 'Signature : ' + me.signature.getValue() + "\n";
         }
         return txt;

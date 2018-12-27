@@ -1,10 +1,10 @@
 /*
  * Select.js - Field
- * 
+ *
  * Select field that supports custom picker templates
  */
 
-Ext.define('FW.view.field.Select', {
+Ext.define('C0banparty.wallet.view.field.Select', {
     extend : 'Ext.field.Select',
     xtype  : 'fw-selectfield',
 
@@ -68,7 +68,7 @@ Ext.define('FW.view.field.Select', {
                                 slot.setItemTpl(config.itemTpl);
                             });
                         }
-                    },                    
+                    },
                     change: this.onPickerChange,
                     scope: this
                 }
@@ -116,7 +116,7 @@ Ext.define('FW.view.field.Select', {
             if (!listPanel.getParent()) {
                 Ext.Viewport.add(listPanel);
             }
-            // Set component to either current field, or 
+            // Set component to either current field, or
             cmp = (cmp) ? cmp : me.getComponent();
             listPanel.showBy(cmp, null);
 
@@ -130,5 +130,5 @@ Ext.define('FW.view.field.Select', {
                 }
             }
         }
-    }    
+    }
 });
