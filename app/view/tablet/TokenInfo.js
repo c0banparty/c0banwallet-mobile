@@ -96,15 +96,15 @@
                     label: 'Total Supply',
                     itemId: 'supply'
                 },{
-                    label: 'USD Price',
-                    itemId: 'usd'
-                },{
-                    label: 'RYO Price',
-                    itemId: 'ryo'
-                },{
-                    label: 'XCB Price',
-                    itemId: 'xcb'
-                },{
+                //     label: 'USD Price',
+                //     itemId: 'usd'
+                // },{
+                //     label: 'RYO Price',
+                //     itemId: 'ryo'
+                // },{
+                //     label: 'XCB Price',
+                //     itemId: 'xcb'
+                // },{
                     label: 'Divisible',
                     itemId: 'divisible'
                 },{

@@ -33,9 +33,9 @@
         me.balance     = me.down('[itemId=balance]');
         me.description = me.down('[itemId=description]');
         me.supply      = me.down('[itemId=supply]');
-        me.xcp         = me.down('[itemId=xcb]');
-        me.btc         = me.down('[itemId=ryo]');
-        me.usd         = me.down('[itemId=usd]');
+        // me.xcp         = me.down('[itemId=xcb]');
+        // me.btc         = me.down('[itemId=ryo]');
+        // me.usd         = me.down('[itemId=usd]');
         me.divisible   = me.down('[itemId=divisible]');
         me.locked      = me.down('[itemId=locked]');
         me.website     = me.down('[itemId=website]');
@@ -109,9 +109,9 @@
         var usd = (data.estimated_value) ? data.estimated_value.usd : 0,
             btc = (data.estimated_value) ? data.estimated_value.btc : 0,
             xcp = (data.estimated_value) ? data.estimated_value.xcp : 0;
-        me.usd.setValue(numeral(usd).format('0,0.00'));
-        me.btc.setValue(numeral(btc).format('0,0.00000000'));
-        me.xcp.setValue(numeral(xcp).format('0,0.00000000'));
+        // me.usd.setValue(numeral(usd).format('0,0.00'));
+        // me.btc.setValue(numeral(btc).format('0,0.00000000'));
+        // me.xcp.setValue(numeral(xcp).format('0,0.00000000'));
         me.website.setValue((data.website) ? data.website : '');
         me.issuer.setValue((data.issuer) ? data.issuer : 'NA');
         me.owner.setValue((data.owner) ? data.owner : 'NA');
