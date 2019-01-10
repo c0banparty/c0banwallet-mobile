@@ -146,7 +146,8 @@
                 showAnimation: 'fadeIn',
                 indicator: true
             });
-            var successCb = function(o){
+            var successCb = function(res){
+                var o = res.result[0];
                 var desc = o.description;
                 if(me.main.isUrl(desc))
                     o.website = desc;
