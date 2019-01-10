@@ -40,46 +40,46 @@ Ext.define('C0banparty.wallet.controller.Main', {
         // Define default server/host settings
         C0banparty.wallet.SERVER_INFO    = {
             mainnet: {
-                cpHost: 'localhost',          // Counterparty Host
-                cpPort: 4000,                           // Counterparty Port
+                cpHost: 'api.c0banparty.co',            // Counterparty Host
+                cpPort: 443,                            // Counterparty Port
                 cpUser: 'rpc',                          // Counterparty Username
                 cpPass: '1234',                         // Counterparty Password
                 cpSSL: true                             // Counterparty SSL Enabled (true=https, false=http)
             },
             testnet: {
-                cpHost: 'localhost',          // Counterparty Host
+                cpHost: 'localhost',                    // Counterparty Host
                 cpPort: 14000,                          // Counterparty Port
                 cpUser: 'rpc',                          // Counterparty Username
                 cpPass: '1234',                         // Counterparty Password
                 cpSSL: true                             // Counterparty SSL Enabled (true=https, false=http)
             },
             regtest: {
-                cpHost: 'localhost',          // Counterparty Host
+                cpHost: 'localhost',                    // Counterparty Host
                 cpPort: 24000,                          // Counterparty Port
-                cpUser: 'test',                          // Counterparty Username
+                cpUser: 'test',                         // Counterparty Username
                 cpPass: 'test',                         // Counterparty Password
-                cpSSL: true                             // Counterparty SSL Enabled (true=https, false=http)
+                cpSSL: false                            // Counterparty SSL Enabled (true=https, false=http)
             }
         };
         // Define default counterblock settings
         C0banparty.wallet.COUNTERBLOCK_INFO    = {
             mainnet: {
-                cpHost: 'localhost',                    // Counterblock Host
-                cpPort: 4100,                           // Counterblock Port
+                cpHost: 'wallet.c0banparty.co',                    // Counterblock Host
+                cpPort: 443,                            // Counterblock Port
                 cpUser: 'rpc',                          // Counterblock Username
                 cpPass: '1234',                         // Counterblock Password
                 cpSSL: true                             // Counterblock SSL Enabled (true=https, false=http)
             },
             testnet: {
                 cpHost: 'localhost',                    // Counterblock Host
-                cpPort: 14100,                          // Counterblock Port
+                cpPort: 443,                            // Counterblock Port
                 cpUser: 'rpc',                          // Counterblock Username
                 cpPass: '1234',                         // Counterblock Password
                 cpSSL: true                             // Counterblock SSL Enabled (true=https, false=http)
             },
             regtest: {
                 cpHost: 'localhost',                    // Counterblock Host
-                cpPort: 24100,                           // Counterblock Port
+                cpPort: 28443,                          // Counterblock Port
                 cpUser: 'test',                          // Counterblock Username
                 cpPass: 'test',                         // Counterblock Password
                 cpSSL: true                             // Counterblock SSL Enabled (true=https, false=http)
@@ -609,11 +609,8 @@ Ext.define('C0banparty.wallet.controller.Main', {
             store  = Ext.getStore('Balances');
 
         // Get Address balance from c0banparty
-        var cbinfo  = C0banparty.wallet.COUNTERBLOCK_INFO,
-            network = (C0banparty.wallet.WALLET_NETWORK==1) ? 'mainnet' : (C0banparty.wallet.WALLET_NETWORK==2) ? 'testnet' : 'regtest',
-            url     = 'http://' + cbinfo[network].cpHost + ':' + cbinfo[network].cpPort + '/';
         me.ajaxRequest({
-            url: url,
+            url: me.counterparty.get_counterblock_api_url(),
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -669,11 +666,8 @@ Ext.define('C0banparty.wallet.controller.Main', {
         });
 
         // Get Asset balances
-        var serverinfo = C0banparty.wallet.SERVER_INFO,
-            network = (C0banparty.wallet.WALLET_NETWORK==1) ? 'mainnet' : (C0banparty.wallet.WALLET_NETWORK==2) ? 'testnet' : 'regtest',
-            asseturl    = 'http://' + serverinfo[network].cpHost + ':' + serverinfo[network].cpPort + '/rest/balances/get?address=' + addr;
         me.ajaxRequest({
-            url: asseturl,
+            url: me.counterparty.get_counterparty_url() + '/rest/balances/get?address=' + addr,
             success: function(o){
                 // if(o.data){
                 Ext.each(o, function(item){
@@ -898,13 +892,9 @@ Ext.define('C0banparty.wallet.controller.Main', {
     // Handle getting Bitcoin transaction history
     getTransactionHistory: function(address, callback){
         var me    = this;
-        // Get RYO transaction history from blocktrail
-        var serverinfo = C0banparty.wallet.SERVER_INFO,
-            network = (C0banparty.wallet.WALLET_NETWORK==1) ? 'mainnet' : (C0banparty.wallet.WALLET_NETWORK==2) ? 'testnet' : 'regtest',
-            ryourl    = 'http://' + serverinfo[network].cpHost + ':' + serverinfo[network].cpPort + '/api/';
+        // Get RYO transaction history
         me.ajaxRequest({
-            // url: 'https://api.blocktrail.com/v1/' + net + '/address/' + address + '/transactions?limit=100&sort_dir=desc&api_key=' + C0banparty.wallet.API_KEYS.BLOCKTRAIL,
-            url: ryourl,
+            url: me.counterparty.get_counterparty_api_url(),
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -934,12 +924,9 @@ Ext.define('C0banparty.wallet.controller.Main', {
         });
 
         // Loop through transaction types and get latest transactions
-        var serverinfo = C0banparty.wallet.COUNTERBLOCK_INFO,
-            network = (C0banparty.wallet.WALLET_NETWORK==1) ? 'mainnet' : (C0banparty.wallet.WALLET_NETWORK==2) ? 'testnet' : 'regtest',
-            asseturl    = 'http://' + serverinfo[network].cpHost + ':' + serverinfo[network].cpPort + '/api/';
         me.ajaxRequest({
             // url: 'https://' + hostB + '/api/' + type + '/' + address,
-            url: asseturl,
+            url: me.counterparty.get_counterblock_api_url(),
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -983,7 +970,7 @@ Ext.define('C0banparty.wallet.controller.Main', {
                         //     if(item.source==address)
                         //         quantity = '-' + quantity;
                         // }
-                        console.log("item quantity", item.quantity, quantity, item._category);
+                        // console.log("item quantity", item.quantity, quantity, item._category);
                         me.updateTransactionHistory(address, tx_hash, tx_type, asset, item._asset_longname, quantity, tstamp);
                     });
                     me.saveStore('Transactions');
@@ -1526,14 +1513,10 @@ Ext.define('C0banparty.wallet.controller.Main', {
 
     // Handle broadcasting a given transaction
     broadcastTransaction: function(network, tx, callback){
-        var me  = this,
-            serverinfo = C0banparty.wallet.COUNTERBLOCK_INFO,
-            network = (C0banparty.wallet.WALLET_NETWORK==1) ? 'mainnet' : (C0banparty.wallet.WALLET_NETWORK==2) ? 'testnet' : 'regtest',
-            asseturl    = 'http://' + serverinfo[network].cpHost + ':' + serverinfo[network].cpPort + '/';
-
+        var me  = this;
         // First try to broadcast using the XChain API
         me.ajaxRequest({
-            url: asseturl,
+            url: me.counterparty.get_counterblock_api_url(),
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -1591,12 +1574,9 @@ Ext.define('C0banparty.wallet.controller.Main', {
 
     // Handle requesting information on a given token
     getTokenInfo: function(asset, callback){
-        var me   = this,
-            serverinfo = C0banparty.wallet.COUNTERBLOCK_INFO,
-            network = (C0banparty.wallet.WALLET_NETWORK==1) ? 'mainnet' : (C0banparty.wallet.WALLET_NETWORK==2) ? 'testnet' : 'regtest',
-            asseturl    = 'http://' + serverinfo[network].cpHost + ':' + serverinfo[network].cpPort + '/';
+        var me   = this;
         me.ajaxRequest({
-            url: asseturl,
+            url: me.counterparty.get_counterblock_api_url(),
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -22,8 +22,6 @@ Ext.define('C0banparty.wallet.controller.Counterparty', {
         var me   = this,
             net  = (C0banparty.wallet.WALLET_NETWORK==1) ? 'mainnet' : (C0banparty.wallet.WALLET_NETWORK==2) ? 'testnet' : 'regtest',
             info = C0banparty.wallet.SERVER_INFO[net],
-            // url  = ((info.cpSSL) ? 'https' : 'http') + '://' + info.cpHost + ':' + info.cpPort + '/api/',
-            url  = 'http://' + info.cpHost + ':' + info.cpPort + '/api/',
             auth = $.base64.btoa(info.cpUser + ':' + info.cpPass);
         // Stash the original success function for use later
         var successFn = request.success;
@@ -53,7 +51,7 @@ Ext.define('C0banparty.wallet.controller.Counterparty', {
         };
         // Send request to server
         Ext.Ajax.request(Ext.merge(request, {
-            url: url,
+            url: me.get_counterparty_api_url(),
             method: 'POST',
             cors: true,
             timeout: 60000,             // timeout after 60 seconds of waiting
@@ -150,9 +148,25 @@ Ext.define('C0banparty.wallet.controller.Counterparty', {
             }
         }, callback);
 
+    },
+
+    get_counterblock_api_url: function(){
+      var serverinfo = C0banparty.wallet.COUNTERBLOCK_INFO,
+          network = C0banparty.wallet.WALLET_NETWORK,
+          networkstr = (network==1) ? 'mainnet' : (network==2) ? 'testnet' : 'regtest',
+          api_suffix = (network==1) ? '_api' : (network==2) ? '_t_api' : '_r_api';
+      return ((serverinfo[networkstr].cpSSL) ? 'https' : 'http') + '://' + serverinfo[networkstr].cpHost + ':' + serverinfo[networkstr].cpPort + '/' + api_suffix + '/';
+    },
+
+    get_counterparty_api_url: function(){
+      var me = this;
+      return me.get_counterparty_url() + '/api/';
+    },
+
+    get_counterparty_url: function(){
+      var serverinfo = C0banparty.wallet.SERVER_INFO,
+          network = C0banparty.wallet.WALLET_NETWORK,
+          networkstr = (network==1) ? 'mainnet' : (network==2) ? 'testnet' : 'regtest';
+      return ((serverinfo[networkstr].cpSSL) ? 'https' : 'http') + '://' + serverinfo[networkstr].cpHost + ':' + serverinfo[networkstr].cpPort;
     }
-
-
-
-
 });

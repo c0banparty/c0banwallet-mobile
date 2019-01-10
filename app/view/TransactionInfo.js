@@ -24,6 +24,7 @@
         var me = this;
         // Setup some aliases
         me.main = C0banparty.wallet.app.getController('Main');
+        me.counterparty   = C0banparty.wallet.app.getController('Counterparty');
         // Add view based on device type
         me.add({ xclass:'C0banparty.wallet.view.' + me.main.deviceType + '.TransactionInfo' });
         // Now that we have added the correct view, setup some aliases to various components
@@ -199,11 +200,7 @@
 
     // Handle requesting transaction information
     getTransactionInfo: function(data){
-        var me         = this,
-            serverinfo = C0banparty.wallet.SERVER_INFO,
-            network = (C0banparty.wallet.WALLET_NETWORK==1) ? 'mainnet' : (C0banparty.wallet.WALLET_NETWORK==2) ? 'testnet' : 'regtest',
-            url    = 'http://' + serverinfo[network].cpHost + ':' + serverinfo[network].cpPort + '/api/';
-
+        var me         = this;
         // Set loading mask on panel to indicate we are loading
         me.setMasked({
             xtype: 'loadmask',
@@ -216,7 +213,7 @@
         if(data.asset=='RYO'){
             // Get RYO transaction info from blocktrail
             me.main.ajaxRequest({
-                url: url,
+                url: me.counterparty.get_counterparty_api_url(),
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -258,11 +255,8 @@
             // console.log('data=',data);
             // Handle requesting transaction info from counterpartychain.io API
             // Loop through transaction types and get latest transactions
-            var serverinfo = C0banparty.wallet.SERVER_INFO,
-                network = (C0banparty.wallet.WALLET_NETWORK==1) ? 'mainnet' : (C0banparty.wallet.WALLET_NETWORK==2) ? 'testnet' : 'regtest',
-                url    = 'http://' + serverinfo[network].cpHost + ':' + serverinfo[network].cpPort + '/';
             me.main.ajaxRequest({
-                url: url,
+                url: me.counterparty.get_counterparty_api_url(),
                 headers: {
                     'Content-Type': 'application/json'
                 },

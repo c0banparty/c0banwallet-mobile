@@ -134,6 +134,7 @@ Ext.define('C0banparty.wallet.view.Issuance', {
             cfg = me.config;
         // Setup alias to main controller
         me.main = C0banparty.wallet.app.getController('Main');
+        me.counterparty   = C0banparty.wallet.app.getController('Counterparty');
         me.tb   = me.down('fw-toptoolbar');
         // Setup aliases to the various fields
         me.type        = me.down('[name=type]');
@@ -241,11 +242,8 @@ Ext.define('C0banparty.wallet.view.Issuance', {
         }
 
         // Make call to counterpartyChain API to check if asset already is registered
-        var serverinfo = C0banparty.wallet.COUNTERBLOCK_INFO,
-            network = (C0banparty.wallet.WALLET_NETWORK==1) ? 'mainnet' : (C0banparty.wallet.WALLET_NETWORK==2) ? 'testnet' : 'regtest',
-            url    = 'http://' + serverinfo[network].cpHost + ':' + serverinfo[network].cpPort + '/';
         me.main.ajaxRequest({
-            url: url,
+            url: me.counterparty.get_counterblock_api_url(),
             headers: {
                 'Content-Type': 'application/json'
             },
