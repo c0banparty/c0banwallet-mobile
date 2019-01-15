@@ -168,13 +168,19 @@
             fee    = (data.fee) ? data.fee : 'NA',
             asset  = (data.asset_longname && data.asset_longname!='') ? data.asset_longname : data.asset,
             type   = data.type.charAt(0).toUpperCase() + data.type.slice(1);
-        if(type=='Order'){
-            var buying  = (data.get_asset_longname!='') ? data.get_asset_longname : data.get_asset,
-                selling = (data.give_asset_longname!='') ? data.give_asset_longname : data.give_asset,
-                fmtA    = (/\./.test(data.get_quantity)) ? '0,0.00000000' : '0,0',
-                fmtB    = (/\./.test(data.give_quantity)) ? '0,0.00000000' : '0,0';
-            me.buying.setValue(numeral(data.get_quantity).format(fmtA) + ' ' + buying);
-            me.selling.setValue(numeral(data.give_quantity).format(fmtB) + ' ' + selling);
+        console.log("order updateData", type, data);
+        if(type=='Orders'){
+            if (data.data) {
+                var order = data.data;
+                var get_quantity = order.get_quantity / 100000000;
+                var give_quantity = order.give_quantity / 100000000;
+                var buying  = (order.get_asset) ? order.get_asset : '',
+                    selling = (order.give_asset) ? order.give_asset : '',
+                    fmtA    = (/\./.test(get_quantity)) ? '0,0.00000000' : '0,0',
+                    fmtB    = (/\./.test(give_quantity)) ? '0,0.00000000' : '0,0';
+                me.buying.setValue(numeral(get_quantity).format(fmtA) + ' ' + buying);
+                me.selling.setValue(numeral(give_quantity).format(fmtB) + ' ' + selling);
+            }
         }
         me.asset.setValue(asset);
         me.type.setValue(type);
@@ -240,7 +246,12 @@
                             block_index: tx.block_height,
                             timestamp: moment.unix(tx.timestamp).format("YYYY-MM-DD H:m:s"),
                             // fee: numeral(o.total_fee).multiply(0.00000001).format('0,0.00000000')
-                            fee: tx.total_fee
+                            fee: tx.total_fee,
+                            // order
+                            get_asset: (tx.get_asset) ? tx.get_asset : '',
+                            give_asset: (tx.give_asset) ? tx.give_asset : '',
+                            get_quantity: (tx.get_quantity) ? tx.get_quantity : '',
+                            give_quantity: (tx.give_quantity) ? tx.give_quantity : ''
                         });
                     }
                     me.setMasked(false);
