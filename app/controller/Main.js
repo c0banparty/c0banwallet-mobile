@@ -667,10 +667,23 @@ Ext.define('C0banparty.wallet.controller.Main', {
 
         // Get Asset balances
         me.ajaxRequest({
-            url: me.counterparty.get_counterparty_url() + '/rest/balances/get?address=' + addr,
+            // url: me.counterparty.get_counterparty_url() + '/rest/balances/get?address=' + addr,
+            url: me.counterparty.get_counterparty_api_url(),
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            jsonData: {
+              	"jsonrpc": "2.0",
+              	"id": 0,
+              	"method": "get_address_balances",
+              	"params": {
+              		  "address": addr
+              	}
+            },
             success: function(o){
-                // if(o.data){
-                Ext.each(o, function(item){
+                // console.log("get_balances", o);
+                Ext.each(o.result, function(item){
                     var type = (item.asset=='XCB') ? 1 : 2;
                     var quantity = numeral(item.quantity * 0.00000001).format('0.00000000')
                     me.updateAddressBalance(address, type, item.asset, item.asset, quantity);  // TODO: consider estimated_value
