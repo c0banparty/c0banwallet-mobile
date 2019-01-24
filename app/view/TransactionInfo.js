@@ -168,7 +168,6 @@
             fee    = (data.fee) ? data.fee : 'NA',
             asset  = (data.asset_longname && data.asset_longname!='') ? data.asset_longname : data.asset,
             type   = data.type.charAt(0).toUpperCase() + data.type.slice(1);
-        console.log("order updateData", type, data);
         if(type=='Orders'){
             if (data.data) {
                 var order = data.data;

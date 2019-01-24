@@ -85,7 +85,8 @@
             me.information.show();
         }
         // Update currency name and image
-        me.image.setSrc('https://xchain.io/icon/' + data.asset.toUpperCase() + '.png');
+        me.image.setSrc('/resources/images/icons/xcp.png');
+
         me.updateData(data);
         // Get the basic currency information
         me.getTokenInfo(data);

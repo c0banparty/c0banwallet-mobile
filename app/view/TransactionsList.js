@@ -40,8 +40,8 @@ Ext.define('C0banparty.wallet.view.TransactionsList', {
                         src = 'resources/images/icons/broadcast.png';
                     } else if(type=='dividends'){
                         src = 'resources/images/icons/dividend.png';
-                    // } else if((type=='send'||type=='order'||type=='issuance') && values.asset!='RYO'){
-                    //     src = 'https://xchain.io/icon/'  + String(values.asset).toUpperCase() + '.png';
+                    } else if((type=='sends'||type=='orders'||type=='issuances') && values.asset != 'RYO'){
+                        src = 'resources/images/icons/xcp.png';
                     }
                     icon = '<img src="' + src + '"/>';
                     return icon;

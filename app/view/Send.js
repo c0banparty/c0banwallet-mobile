@@ -69,13 +69,16 @@ Ext.define('C0banparty.wallet.view.Send', {
                             itemTpl: new Ext.XTemplate(
                                 '<div class="fw-pickerlist-item">' +
                                     '<div class="fw-pickerlist-icon">' +
-                                        '<img src="https://xchain.io/icon/{[this.toUpper(values.asset)]}.png">' +
+                                        '<img src="{[this.icon(values)]}">' +
                                     '</div>' +
                                     '<div class="fw-pickerlist-info">' +
                                         '<div class="fw-pickerlist-currency">{display_name}</div>' +
                                     '</div>' +
                                 '</div>',
                                 {
+                                    icon: function(values){
+                                        return '/resources/images/icons/' + (values.asset == 'RYO' ? 'btc' : 'xcp') + '.png';
+                                    },
                                     toUpper: function(val){
                                         return String(val).toUpperCase();
                                     }
@@ -87,13 +90,16 @@ Ext.define('C0banparty.wallet.view.Send', {
                             itemTpl: new Ext.XTemplate(
                                 '<div class="fw-pickerlist-item">' +
                                     '<div class="fw-pickerlist-icon">' +
-                                        '<img src="https://xchain.io/icon/{[this.toUpper(values.asset)]}.png" width="35">' +
+                                        '<img src="{[this.icon(values)]}">' +
                                     '</div>' +
                                     '<div class="fw-pickerlist-info">' +
                                         '<div class="fw-pickerlist-currency">{display_name}</div>' +
                                     '</div>' +
                                 '</div>',
                                 {
+                                    icon: function(values){
+                                        return '/resources/images/icons/' + (values.asset == 'RYO' ? 'btc' : 'xcp') + '.png';
+                                    },
                                     toUpper: function(val){
                                         return String(val).toUpperCase();
                                     }
@@ -296,7 +302,7 @@ Ext.define('C0banparty.wallet.view.Send', {
         var me  = this,
             src = 'resources/images/wallet.png';
         if(asset)
-            src = 'https://xchain.io/icon/' + asset.toUpperCase() + '.png';
+            src = 'resources/images/icons/xcp.png';
         if(asset=='RYO')
             src = 'resources/images/icons/btc.png';
         me.image.setSrc(src);

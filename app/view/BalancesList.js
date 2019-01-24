@@ -21,7 +21,7 @@ Ext.define('C0banparty.wallet.view.BalancesList', {
         itemTpl: new Ext.XTemplate(
             '<div class="fw-balanceslist-item">' +
                 '<div class="fw-balanceslist-icon">' +
-                    '<img src="https://xchain.io/icon/{[this.toUpper(values.asset)]}.png">' +
+                    '<img src="{[this.icon(values)]}">' +
                 '</div>' +
                 '<div class="fw-balanceslist-info">' +
                     '<div class="fw-balanceslist-currency">{display_name}</div>' +
@@ -32,6 +32,9 @@ Ext.define('C0banparty.wallet.view.BalancesList', {
                 '</div>' +
             '</div>',
             {
+                icon: function(values){
+                    return '/resources/images/icons/' + (values.asset == 'RYO' ? 'btc' : 'xcp') + '.png';
+                },
                 toUpper: function(val){
                     return String(val).toUpperCase();
                 },
