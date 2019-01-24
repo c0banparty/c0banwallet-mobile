@@ -1,4 +1,4 @@
 #!/bin/bash
 
 sencha app build native
-docker build .
+docker build -t mobilewallet .
