@@ -685,7 +685,8 @@ Ext.define('C0banparty.wallet.controller.Main', {
                 // console.log("get_balances", o);
                 Ext.each(o.result, function(item){
                     var type = (item.asset=='XCB') ? 1 : 2;
-                    var quantity = numeral(item.quantity * 0.00000001).format('0.00000000')
+                    var quantity = (item.divisible) ? item.quantity * 0.00000001 : item.quantity;
+                    quantity = numeral(quantity).format('0.00000000')
                     me.updateAddressBalance(address, type, item.asset, item.asset, quantity);  // TODO: consider estimated_value
                 });
                 me.saveStore('Balances');
